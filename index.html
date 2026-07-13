@@ -200,6 +200,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .nu-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none;font-family:inherit;background:#fff;color:var(--text)}
 .nu-input:focus{border-color:var(--primary)}
 .btn-save-user{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;width:100%}
+/* Photos */
+.q-photos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.q-photo-thumb{width:64px;height:64px;object-fit:cover;border-radius:8px;border:2px solid var(--border);cursor:pointer}
+.btn-add-photo{border:1.5px dashed var(--border);background:none;border-radius:8px;padding:5px 10px;font-size:12px;color:var(--muted);cursor:pointer;margin-top:6px;display:inline-flex;align-items:center;gap:4px}
+/* Edit/Delete eval */
+.eval-actions{display:flex;gap:10px;margin-bottom:16px}
+.btn-edit-eval{flex:1;background:#fff;border:2px solid var(--primary);color:var(--primary);border-radius:10px;padding:12px;font-size:14px;font-weight:700;cursor:pointer}
+.btn-del-eval{background:#fff5f5;border:2px solid #e53935;color:#e53935;border-radius:10px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;width:52px;text-align:center}
+/* Multi-store */
+.nu-stores-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:160px;overflow-y:auto;margin-bottom:4px}
+.nu-store-btn{background:var(--bg);border:2px solid var(--border);border-radius:8px;padding:7px 4px;font-size:11px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s}
+.nu-store-btn.on{background:var(--primary);border-color:var(--primary);color:#fff}
 /* Toast */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
 .toast.show{opacity:1}
@@ -335,6 +347,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="result-areas" id="result-areas"></div>
     <div class="result-breakdown"><h3>Pontos de Atenção</h3><div id="result-breakdown-list"></div></div>
     <div class="result-notes"><h3>Conclusão / Observações</h3><textarea id="result-notes-input" rows="3" placeholder="Adicione uma conclusão geral..."></textarea></div>
+    <div class="eval-actions"><button class="btn-edit-eval" onclick="startEditEval()">&#9999;&#65039; Editar</button><button class="btn-del-eval" onclick="deleteCurrentEval()">&#128465;</button></div>
     <div class="export-btns">
       <button class="btn-export" onclick="exportPDF()">📄 PDF</button>
       <button class="btn-export" onclick="exportExcel()">📊 Excel</button>
@@ -418,10 +431,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
           <input class="nu-input" type="password" id="nu-pass" placeholder="Mínimo 4 caracteres" autocomplete="new-password">
         </div>
         <div>
-          <span class="nu-form-label">Loja vinculada</span>
-          <select class="nu-input" id="nu-store">
-            <option value="">— Todas as lojas (Master) —</option>
-          </select>
+          <span class="nu-form-label">Lojas com acesso</span>
+          <div class="nu-stores-grid" id="nu-stores-grid"></div>
+          <small style="color:var(--muted)">Deixe tudo desmarcado = todas as lojas</small>
         </div>
         <div>
           <span class="nu-form-label">Perfil</span>
@@ -440,7 +452,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <script>
 const STORES=['Lapa','Londrina','Maringá','Paranaguá','Rui Barbosa','Água Verde','Santa Felicidade','Joinville 1','Bacacheri','Joinville 2','Jardim das Américas','Fanny','Joinville 3','Joinville 4','Paranavaí'];
 
-const DEFAULT_USERS=[{id:'u0',name:'Master',username:'master',pass:'master123',store:null,role:'master'}];
+const DEFAULT_USERS=[{id:'u0',name:'Master',username:'master',pass:'master123',stores:[],role:'master'}];
 
 const DEFAULT_CL=[
 {id:'vm',name:'Visual Merchandising',icon:'🏮',hasStore:true,hasPerson:false,areas:[
@@ -719,6 +731,7 @@ const DEFAULT_CL=[
 
 let checklists=[],evaluations=[],users=[],currentEval=null,editingTypeId=null,editingCl=null,histFilter='all',viewingEval=null,prevScreen='s-home';
 let currentDashTypeId=null;
+let editingEvalId=null;
 
 /* ─── DATA ─── */
 function loadData(){
@@ -732,10 +745,11 @@ function saveEV(){localStorage.setItem('cc2_ev',JSON.stringify(evaluations))}
 function loadUsers(){
   try{const u=localStorage.getItem('cc2_users');users=u?JSON.parse(u):JSON.parse(JSON.stringify(DEFAULT_USERS))}
   catch(e){users=JSON.parse(JSON.stringify(DEFAULT_USERS))}
+  users=users.map(u=>{if(!u.stores)return Object.assign({},u,{stores:u.store?[u.store]:[]});return u});
 }
 function saveUsers(){localStorage.setItem('cc2_users',JSON.stringify(users))}
 function getSession(){try{return JSON.parse(localStorage.getItem('cc2_sess'))}catch(e){return null}}
-function setSession(u){localStorage.setItem('cc2_sess',JSON.stringify({id:u.id,name:u.name,store:u.store,role:u.role}))}
+function setSession(u){localStorage.setItem('cc2_sess',JSON.stringify({id:u.id,name:u.name,stores:u.stores||[],role:u.role}))}
 function isMaster(){const s=getSession();return s&&s.role==='master'}
 
 /* ─── AUTH ─── */
@@ -787,7 +801,7 @@ function renderHome(){
   grid.innerHTML=checklists.map(cl=>{const tot=cl.areas.reduce((s,a)=>s+a.questions.length,0);return'<div class="cl-card" onclick="goCLDashboard(\''+cl.id+'\')"><div class="cl-icon">'+cl.icon+'</div><div class="cl-name">'+esc(cl.name)+'</div><div class="cl-count">'+tot+' perguntas · '+cl.areas.length+' área(s)</div></div>'}).join('');
   const sess2=getSession();
   let evs=[...evaluations];
-  if(sess2&&sess2.store)evs=evs.filter(e=>e.store===sess2.store);
+  const _st2=(sess2&&sess2.stores)||[];if(_st2.length)evs=evs.filter(e=>_st2.includes(e.store));
   const recent=evs.sort((a,b)=>b.id-a.id).slice(0,5);
   const rl=document.getElementById('recent-list');
   if(!recent.length){rl.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:16px">Nenhuma avaliação ainda</div>';return}
@@ -805,7 +819,7 @@ function renderCLDashboard(typeId){
   if(!cl)return;
   const sess=getSession();
   let evs=evaluations.filter(e=>e.typeId===typeId);
-  if(sess&&sess.store)evs=evs.filter(e=>e.store===sess.store);
+  const _stf=(sess&&sess.stores)||[];if(_stf.length)evs=evs.filter(e=>_stf.includes(e.store));
 
   document.getElementById('dash-cl-name').textContent=cl.name;
   document.getElementById('dash-cl-icon').textContent=cl.icon;
@@ -835,7 +849,7 @@ function renderCLDashboard(typeId){
 
   // Store ranking (master only)
   const rankSec=document.getElementById('dash-ranking-sec');
-  if(!sess||!sess.store){
+  if(!sess||!(sess.stores&&sess.stores.length)){
     rankSec.style.display='';
     const storeMap={};
     evs.forEach(e=>{if(!storeMap[e.store])storeMap[e.store]={scores:[],count:0};storeMap[e.store].scores.push(e.score);storeMap[e.store].count++});
@@ -865,14 +879,14 @@ function startSetup(typeId){
   document.getElementById('setup-person').value='';
   document.getElementById('setup-notes').value='';
   const sess=getSession();
-  const userStore=sess&&sess.store?sess.store:null;
-  
+  const userStores=(sess&&sess.stores)||[];
   const sg=document.getElementById('setup-store-grid');
   sg.innerHTML=STORES.map(s=>{
-    const locked=userStore&&s!==userStore;
-    return'<button class="store-btn'+(userStore===s?' selected':'')+'" onclick="selectStore(\''+s.replace(/'/g,"\\'")+ '\',this)"'+(locked?' disabled':'')+'>'+esc(s)+'</button>'
+    const locked=userStores.length>0&&!userStores.includes(s);
+    const pre=userStores.length===1&&s===userStores[0];
+    return'<button class="store-btn'+(pre?' selected':'')+' onclick="selectStore(\''+s.replace(/'/g,"\\'")+'\',this)"'+(locked?' disabled':'')+'>'+esc(s)+'</button>'
   }).join('');
-  if(userStore){setupStore=userStore;currentEval.store=userStore}
+  if(userStores.length===1){setupStore=userStores[0];currentEval.store=userStores[0]}
   document.getElementById('setup-person-sec').style.display=cl.hasPerson?'block':'none';
   checkSetupReady();
   showScreen('s-setup')
@@ -914,6 +928,8 @@ function renderChecklist(){
       '<div class="q-weight">Peso '+q.weight+'</div>'+
       '<div class="q-text">'+esc(q.text)+'</div>'+
       '<div class="score-btns">'+ [0,1,2,3,4,5].map(v=>'<button class="sbt sbt-'+v+(ans&&ans.score===v?' on':'')+'" onclick="setScore(\''+q.id+'\','+v+',this)">'+v+'</button>').join('') +'</div>'+
+      '<div class="q-photos" id="qph-'+q.id+'">'+photoThumbsHTML(q.id)+'</div>'+
+      '<button class="btn-add-photo" onclick="addPhoto(\''+q.id+'\')">📷 Foto</button>'+
       '<textarea class="q-comment" rows="2" placeholder="Observação (opcional)..." onchange="setComment(\''+q.id+'\',this.value)">'+(ans&&ans.comment?esc(ans.comment):'')+'</textarea>'+
       '</div>'
   });
@@ -957,7 +973,12 @@ function finishChecklist(){
   const sd=calcScore();
   const id=Date.now();
   const ev={id,typeId:currentEval.typeId,store:currentEval.store,person:currentEval.person,date:new Date().toISOString().split('T')[0],score:sd.pct,areaScores:sd.areaScores,answers:currentEval.answers,notes:currentEval.notes,conclusion:''};
-  evaluations.push(ev);saveEV();
+  if(editingEvalId){
+    const _ei=evaluations.findIndex(e=>e.id===editingEvalId);
+    if(_ei>=0){ev.id=editingEvalId;evaluations[_ei]=ev}else{evaluations.push(ev)}
+    editingEvalId=null;
+  }else{evaluations.push(ev)}
+  saveEV();
   prevScreen='s-cl-dashboard';
   viewingEval=ev;renderResult(ev);showScreen('s-result')
 }
@@ -987,7 +1008,7 @@ function renderHistory(){
   const f=document.getElementById('hist-filters');
   const sess=getSession();
   let allEvs=[...evaluations];
-  if(sess&&sess.store)allEvs=allEvs.filter(e=>e.store===sess.store);
+  const _sth2=(sess&&sess.stores)||[];if(_sth2.length)allEvs=allEvs.filter(e=>_sth2.includes(e.store));
   const types=[...new Set(allEvs.map(e=>e.typeId))];
   f.innerHTML='<button class="filter-chip '+(histFilter==='all'?'active':'')+'" onclick="setHistFilter(\'all\',this)">Todos</button>'+
     types.map(tid=>{const cl=checklists.find(c=>c.id===tid);return'<button class="filter-chip '+(histFilter===tid?'active':'')+'" onclick="setHistFilter(\''+tid+'\',this)">'+(cl?cl.icon+' '+esc(cl.name):tid)+'</button>'}).join('');
@@ -998,7 +1019,7 @@ function renderHistBody(){
   const body=document.getElementById('hist-body');
   const sess=getSession();
   let evs=[...evaluations].sort((a,b)=>b.id-a.id);
-  if(sess&&sess.store)evs=evs.filter(e=>e.store===sess.store);
+  const _sth=(sess&&sess.stores)||[];if(_sth.length)evs=evs.filter(e=>_sth.includes(e.store));
   if(histFilter!=='all')evs=evs.filter(e=>e.typeId===histFilter);
   if(!evs.length){body.innerHTML='<div class="hist-empty"><div class="hist-empty-icon">\u{1f4cb}</div><div>Nenhuma avaliação encontrada</div></div>';return}
   body.innerHTML=evs.map(ev=>{const cl=checklists.find(c=>c.id===ev.typeId);const sc=ev.score;return'<div class="hist-item" onclick="viewEval('+ev.id+',\'s-history\')">'+'<div class="hist-icon">'+(cl?cl.icon:'\u{1f4cb}')+'</div><div class="hist-info"><div class="hist-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+'</div><div class="hist-meta">'+(cl?esc(cl.name):'?')+' · '+fmtDate(ev.date)+'</div></div><div class="hist-score '+scColor(sc)+'">'+sc.toFixed(0)+'%</div></div>'}).join('')
@@ -1042,27 +1063,33 @@ function changeMyPassword(){
 function resetData(){if(!confirm('Apagar TODAS as avaliações? Ação irreversível.'))return;evaluations=[];saveEV();showToast('\u{1f5d1} Dados apagados.')}
 /* USERS ADMIN */
 function renderAdminUsers(){
-  const sel=document.getElementById('nu-store');
-  if(sel.options.length<=1){STORES.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o)})}
-  document.getElementById('users-list').innerHTML=users.map(u=>'<div class="user-card"><div class="user-card-icon">'+(u.role==='master'?'\u{1f451}':'\u{1f464}')+'</div><div class="user-card-info"><div class="user-card-name">'+esc(u.name)+'</div><div class="user-card-meta">@'+esc(u.username)+' · '+(u.store?esc(u.store):'Todas as lojas')+(u.role==='master'?' · Master':'')+'</div></div>'+(u.id!=='u0'?'<button class="user-card-del" onclick="deleteUser(\''+u.id+'\')" title="Excluir">✕</button>':'')+'</div>').join('')
+  const grid=document.getElementById('nu-stores-grid');
+  if(grid&&!grid.children.length){grid.innerHTML=STORES.map(s=>'<button type="button" class="nu-store-btn" onclick="this.classList.toggle(\'on\')">'+ esc(s)+'</button>').join('')}
+  document.getElementById('users-list').innerHTML=users.map(u=>{
+    const sl=u.stores&&u.stores.length?u.stores.join(', '):'Todas as lojas';
+    return'<div class="user-card"><div class="user-card-icon">'+(u.role==='master'?'👑':'👤')+
+    '</div><div class="user-card-info"><div class="user-card-name">'+esc(u.name)+'</div>'
+    +'<div class="user-card-meta">@'+esc(u.username)+' · '+esc(sl)+(u.role==='master'?' · Master':'')+'</div></div>'
+    +(u.id!=='u0'?'<button class="user-card-del" onclick="deleteUser(\''+u.id+'\')" title="Excluir">✕</button>':'')+'</div>';
+  }).join('')
 }
 function saveNewUser(){
   const name=document.getElementById('nu-name').value.trim();
   const username=document.getElementById('nu-user').value.trim().toLowerCase();
   const pass=document.getElementById('nu-pass').value;
-  const store=document.getElementById('nu-store').value||null;
+  const stores=[...document.querySelectorAll('#nu-stores-grid .nu-store-btn.on')].map(b=>b.textContent);
   const role=document.getElementById('nu-role').value;
   if(!name){showToast('Informe o nome.');return}
   if(!username){showToast('Informe o login.');return}
   if(pass.length<4){showToast('Senha mínima: 4 caracteres.');return}
   if(users.find(u=>u.username.toLowerCase()===username)){showToast('Login já existe.');return}
-  const newUser={id:'u'+Date.now(),name,username,pass,store,role};
+  const newUser={id:'u'+Date.now(),name,username,pass,stores,role};
   users.push(newUser);saveUsers();
   document.getElementById('nu-name').value='';
   document.getElementById('nu-user').value='';
   document.getElementById('nu-pass').value='';
-  document.getElementById('nu-store').value='';
   document.getElementById('nu-role').value='user';
+  document.querySelectorAll('#nu-stores-grid .nu-store-btn.on').forEach(b=>b.classList.remove('on'));
   renderAdminUsers();
   showToast('✅ Usuário criado!')
 }
@@ -1079,8 +1106,9 @@ function shareResult(){
   if(navigator.share){navigator.share({title:'Checklist Casa China',text})}
   else{navigator.clipboard&&navigator.clipboard.writeText(text).then(()=>showToast('\u{1f4cb} Copiado!'))}
 }
-function exportPDF(){
-  if(typeof window.jspdf==='undefined'){showToast('Biblioteca PDF não carregada.');return}
+async function exportPDF(){
+  let _pw=0;while(typeof window.jspdf==='undefined'&&_pw++<40){await new Promise(r=>setTimeout(r,200))}
+  if(typeof window.jspdf==='undefined'){showToast('❌ PDF não carregado. Verifique conexão.');return}
   const{jsPDF}=window.jspdf;const ev=viewingEval;const cl=checklists.find(c=>c.id===ev.typeId);
   const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
   doc.setFillColor(192,57,43);doc.rect(0,0,210,32,'F');
@@ -1115,6 +1143,71 @@ function exportExcel(){
   ws['!cols']=[{wch:28},{wch:60},{wch:8},{wch:12},{wch:12},{wch:30}];
   const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Avaliação');
   XLSX.writeFile(wb,'checklist_'+ev.store.replace(/\s+/g,'_')+'_'+ev.date+'.xlsx');showToast('\u{1f4ca} Excel gerado!')
+}
+/* PHOTOS */
+function photoThumbsHTML(qid){
+  const ans=currentEval&&currentEval.answers?currentEval.answers[qid]:null;
+  if(!ans||!ans.photos||!ans.photos.length)return'';
+  return ans.photos.map((p,i)=>'<img class="q-photo-thumb" src="'+p+'" onclick="viewPhoto('+i+')" title="Ver foto">').join('')
+}
+function addPhoto(qid){
+  const inp=document.createElement('input');
+  inp.type='file';inp.accept='image/*';inp.capture='environment';
+  inp.onchange=async()=>{
+    const file=inp.files[0];if(!file)return;
+    const dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(file)});
+    const resized=await resizeImg(dataUrl);
+    if(!currentEval.answers[qid])currentEval.answers[qid]={score:null,comment:''};
+    if(!currentEval.answers[qid].photos)currentEval.answers[qid].photos=[];
+    currentEval.answers[qid].photos.push(resized);
+    const ph=document.getElementById('qph-'+qid);
+    if(ph)ph.innerHTML=photoThumbsHTML(qid);
+    showToast('📷 Foto adicionada!');
+  };
+  inp.click();
+}
+function resizeImg(dataUrl,maxPx=800){
+  return new Promise(res=>{
+    const img=new Image();
+    img.onload=()=>{
+      const ratio=Math.min(maxPx/img.width,maxPx/img.height,1);
+      const cv=document.createElement('canvas');
+      cv.width=Math.round(img.width*ratio);cv.height=Math.round(img.height*ratio);
+      cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);
+      res(cv.toDataURL('image/jpeg',0.75));
+    };
+    img.src=dataUrl;
+  });
+}
+function viewPhoto(idx){
+  const ev=currentEval&&Object.keys(currentEval.answers||{}).length?currentEval:viewingEval;
+  const allPhotos=ev&&ev.answers?Object.values(ev.answers).flatMap(a=>a.photos||[]):[];
+  if(!allPhotos.length)return;
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:flex;align-items:center;justify-content:center;cursor:pointer';
+  ov.onclick=()=>ov.remove();
+  const im=document.createElement('img');
+  im.style.cssText='max-width:95vw;max-height:95vh;border-radius:8px';
+  im.src=allPhotos[idx%allPhotos.length];
+  ov.appendChild(im);document.body.appendChild(ov);
+}
+/* EDIT / DELETE EVAL */
+function startEditEval(){
+  const ev=viewingEval;if(!ev)return;
+  if(!checklists.find(cl=>cl.id===ev.typeId)){showToast('Tipo de checklist não encontrado.');return}
+  editingEvalId=ev.id;
+  currentEval={typeId:ev.typeId,store:ev.store,person:ev.person||'',notes:ev.notes||'',answers:JSON.parse(JSON.stringify(ev.answers||{}))};
+  setupStore=ev.store;
+  renderChecklist();
+  showScreen('s-checklist');
+}
+function deleteCurrentEval(){
+  const ev=viewingEval;if(!ev)return;
+  if(!confirm('Excluir esta avaliação permanentemente?'))return;
+  evaluations=evaluations.filter(e=>e.id!==ev.id);
+  saveEV();viewingEval=null;
+  showToast('🗑 Avaliação excluída.');
+  goBack();
 }
 /* INIT */
 function init(){
