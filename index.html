@@ -18,6 +18,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .header-back{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px}
 .header h1{font-size:17px;font-weight:700;flex:1}
 .header-action{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px}
+/* Login */
 #s-login{background:var(--dark);justify-content:center;align-items:center;padding:32px 24px}
 .login-logo{font-size:72px;margin-bottom:8px;text-align:center}
 .login-title{color:#fff;font-size:24px;font-weight:800;text-align:center;margin-bottom:4px}
@@ -29,10 +30,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .form-group input::placeholder{color:rgba(255,255,255,.3)}
 .btn-login{width:100%;background:var(--primary);border:none;border-radius:12px;padding:16px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px}
 .login-err{color:#ff6b6b;font-size:13px;text-align:center;margin-top:10px;min-height:18px}
-.home-hero{background:var(--primary);padding:20px 16px 24px;color:#fff}
+/* Home */
+.home-hero{background:var(--primary);padding:20px 16px 24px;color:#fff;position:relative}
+.home-hero-top{display:flex;align-items:flex-start;justify-content:space-between}
 .home-user{font-size:12px;opacity:.7;margin-bottom:4px}
 .home-title{font-size:20px;font-weight:800}
 .home-sub{font-size:13px;opacity:.7;margin-top:2px}
+.btn-logout{background:rgba(255,255,255,.18);border:none;border-radius:8px;padding:6px 12px;color:#fff;font-size:12px;font-weight:600;cursor:pointer}
 .home-content{padding:16px;flex:1}
 .section-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--muted);margin-bottom:10px;margin-top:4px}
 .cl-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
@@ -53,16 +57,42 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;padding:10px 4px 12px;background:none;border:none;cursor:pointer;color:var(--muted);font-size:10px;gap:3px}
 .nav-btn.active{color:var(--primary)}
 .nav-btn svg{width:22px;height:22px}
+/* Dashboard */
+.dash-hero{background:var(--primary);padding:12px 16px 18px;color:#fff}
+.dash-hero-icon{font-size:32px;margin-bottom:6px}
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.dash-stat{background:rgba(255,255,255,.15);border-radius:10px;padding:10px 6px;text-align:center}
+.dash-stat-num{font-size:19px;font-weight:900}
+.dash-stat-label{font-size:10px;opacity:.8;margin-top:2px}
+.dash-body{padding:12px 12px 80px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px}
+.dash-card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.dash-card-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:12px}
+.dash-area-row{margin-bottom:10px}
+.dash-area-name{font-size:12px;font-weight:600;margin-bottom:5px}
+.dash-area-bar-wrap{display:flex;align-items:center;gap:8px}
+.dash-area-bar{flex:1;background:var(--bg);border-radius:99px;height:10px;overflow:hidden}
+.dash-area-bar-fill{height:10px;border-radius:99px;transition:width .6s}
+.dash-area-pct{font-size:13px;font-weight:700;width:44px;text-align:right}
+.dash-rank-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.dash-rank-row:last-child{border-bottom:none;padding-bottom:0}
+.dash-rank-pos{font-size:15px;width:28px}
+.dash-rank-store{flex:1;font-size:13px;font-weight:600}
+.dash-rank-avg{font-size:14px;font-weight:800;width:44px;text-align:right}
+.dash-rank-count{font-size:11px;color:var(--muted);width:24px;text-align:right}
+.btn-new-eval{display:block;width:100%;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:4px}
+/* Setup */
 .setup-content{padding:16px;flex:1;display:flex;flex-direction:column;gap:14px}
 .setup-section{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
 .setup-section h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px}
 .store-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .store-btn{background:var(--bg);border:2px solid var(--border);border-radius:8px;padding:10px 6px;font-size:12px;font-weight:600;cursor:pointer;text-align:center;transition:all .15s}
 .store-btn.selected{background:var(--primary);border-color:var(--primary);color:#fff}
+.store-btn:disabled{opacity:.35;cursor:default}
 .setup-input{width:100%;border:2px solid var(--border);border-radius:10px;padding:12px 14px;font-size:15px;outline:none;transition:border .2s;font-family:inherit}
 .setup-input:focus{border-color:var(--primary)}
 .btn-start{background:var(--primary);color:#fff;border:none;border-radius:12px;padding:16px;font-size:16px;font-weight:700;cursor:pointer;margin:0 16px 20px}
 .btn-start:disabled{opacity:.4;cursor:default}
+/* Checklist */
 .cl-progress-wrap{background:var(--primary);padding:10px 16px 14px}
 .cl-progress-label{color:rgba(255,255,255,.8);font-size:12px;margin-bottom:6px}
 .progress-bar{background:rgba(255,255,255,.3);border-radius:99px;height:6px}
@@ -88,6 +118,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .cl-footer{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:0 auto;background:var(--card);border-top:1px solid var(--border);padding:12px 16px}
 .btn-finish{width:100%;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer}
 .btn-finish:disabled{opacity:.4}
+/* Result */
 .result-hero{background:var(--primary);padding:24px 16px;color:#fff;text-align:center}
 .result-score-ring{width:120px;height:120px;border-radius:50%;border:8px solid rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;flex-direction:column}
 .result-score-num{font-size:32px;font-weight:900}
@@ -114,6 +145,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .result-notes{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:16px}
 .result-notes h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:8px}
 .result-notes textarea{width:100%;border:1px solid var(--border);border-radius:8px;padding:10px;font-size:13px;resize:none;outline:none;font-family:inherit;min-height:80px}
+/* History */
 .hist-filters{background:var(--card);padding:12px 16px;border-bottom:1px solid var(--border);display:flex;gap:8px;overflow-x:auto}
 .filter-chip{background:var(--bg);border:1px solid var(--border);border-radius:99px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap}
 .filter-chip.active{background:var(--primary);border-color:var(--primary);color:#fff}
@@ -125,6 +157,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .hist-name{font-size:14px;font-weight:700}
 .hist-meta{font-size:11px;color:var(--muted);margin-top:2px}
 .hist-score{font-size:18px;font-weight:900}
+/* Admin */
 .admin-body{padding:12px 12px 80px;flex:1;overflow-y:auto}
 .admin-section{margin-bottom:20px}
 .admin-card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:12px}
@@ -139,6 +172,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .pwd-row input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none}
 .pwd-row input:focus{border-color:var(--primary)}
 .btn-save-pwd{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:14px;font-weight:700;cursor:pointer;margin-top:10px}
+/* Admin type editor */
 .admin-type-body{padding:12px 12px 100px;flex:1;overflow-y:auto}
 .admin-area-card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:12px}
 .admin-area-header{display:flex;align-items:center;gap:8px;margin-bottom:12px}
@@ -154,19 +188,54 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .btn-add-area{width:100%;border:2px dashed var(--primary);background:none;border-radius:var(--radius);padding:12px;font-size:14px;color:var(--primary);font-weight:600;cursor:pointer;margin-bottom:12px}
 .cl-type-footer{position:fixed;bottom:0;left:0;right:0;max-width:430px;margin:0 auto;background:var(--card);border-top:1px solid var(--border);padding:12px 16px}
 .btn-save-type{width:100%;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:14px;font-size:15px;font-weight:700;cursor:pointer}
+/* Users admin */
+.user-card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);margin-bottom:10px;display:flex;align-items:center;gap:12px}
+.user-card-icon{font-size:24px}
+.user-card-info{flex:1}
+.user-card-name{font-size:14px;font-weight:700}
+.user-card-meta{font-size:11px;color:var(--muted);margin-top:2px}
+.user-card-del{background:none;border:none;color:#ccc;font-size:20px;cursor:pointer;padding:4px 6px}
+.nu-form{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.nu-form-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px;display:block}
+.nu-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none;font-family:inherit;background:#fff;color:var(--text)}
+.nu-input:focus{border-color:var(--primary)}
+.btn-save-user{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;width:100%}
+/* Toast */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:99px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
 </head>
 <body>
 <div class="app">
-<div class="screen" id="s-login"></div>
 
-<div class="screen active" id="s-home">
+<!-- LOGIN -->
+<div class="screen active" id="s-login">
+  <div class="login-logo">🏮</div>
+  <div class="login-title">Casa China</div>
+  <div class="login-sub">Sistema de Checklists</div>
+  <div class="form-group">
+    <label>Usuário</label>
+    <input type="text" id="li-user" placeholder="seu.usuario" autocomplete="username" autocapitalize="none">
+  </div>
+  <div class="form-group">
+    <label>Senha</label>
+    <input type="password" id="li-pass" placeholder="••••••••" autocomplete="current-password">
+  </div>
+  <button class="btn-login" onclick="doLogin()">Entrar</button>
+  <div class="login-err" id="li-err"></div>
+</div>
+
+<!-- HOME -->
+<div class="screen" id="s-home">
   <div class="home-hero">
-    <div class="home-user">👤 Perfil Master</div>
-    <div class="home-title">🏮 Checklist Casa China</div>
-    <div class="home-sub" id="home-date"></div>
+    <div class="home-hero-top">
+      <div>
+        <div class="home-user" id="home-user">👤 Perfil Master</div>
+        <div class="home-title">🏮 Checklist Casa China</div>
+        <div class="home-sub" id="home-date"></div>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">Sair</button>
+    </div>
   </div>
   <div class="home-content">
     <div class="section-title">Checklists Disponíveis</div>
@@ -187,8 +256,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
+<!-- DASHBOARD POR CHECKLIST -->
+<div class="screen" id="s-cl-dashboard">
+  <div class="header">
+    <button class="header-back" onclick="goHome()">←</button>
+    <h1 id="dash-cl-name">Dashboard</h1>
+  </div>
+  <div class="dash-hero">
+    <div class="dash-hero-icon" id="dash-cl-icon"></div>
+    <div class="dash-stats" id="dash-stats"></div>
+  </div>
+  <div class="dash-body">
+    <button class="btn-new-eval" onclick="startSetup(currentDashTypeId)">＋ Nova Avaliação</button>
+    <div class="dash-card">
+      <div class="dash-card-title">Média por Área</div>
+      <div id="dash-areas"><div style="color:var(--muted);font-size:13px">Sem avaliações ainda</div></div>
+    </div>
+    <div class="dash-card" id="dash-ranking-sec">
+      <div class="dash-card-title">Ranking de Lojas</div>
+      <div id="dash-ranking"></div>
+    </div>
+    <div class="dash-card">
+      <div class="dash-card-title">Avaliações Recentes</div>
+      <div id="dash-recent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- SETUP -->
 <div class="screen" id="s-setup">
-  <div class="header"><button class="header-back" onclick="goHome()">←</button><h1 id="setup-title">Nova Avaliação</h1></div>
+  <div class="header"><button class="header-back" onclick="backFromSetup()">←</button><h1 id="setup-title">Nova Avaliação</h1></div>
   <div class="setup-content">
     <div class="setup-section">
       <h3>Loja</h3>
@@ -206,6 +303,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <button class="btn-start" id="btn-start" onclick="startChecklist()" disabled>Iniciar Checklist ▶</button>
 </div>
 
+<!-- CHECKLIST -->
 <div class="screen" id="s-checklist">
   <div class="header" style="flex-direction:column;align-items:flex-start;gap:6px;padding-bottom:0">
     <div style="display:flex;align-items:center;gap:10px;width:100%;padding-bottom:10px">
@@ -222,8 +320,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="cl-footer"><button class="btn-finish" id="btn-finish" onclick="finishChecklist()">Finalizar e Ver Resultado</button></div>
 </div>
 
+<!-- RESULTADO -->
 <div class="screen" id="s-result">
-  <div class="header"><button class="header-back" onclick="goHome()">←</button><h1>Resultado</h1><button class="header-action" onclick="shareResult()">⬆</button></div>
+  <div class="header"><button class="header-back" onclick="goBack()">←</button><h1>Resultado</h1><button class="header-action" onclick="shareResult()">⬆</button></div>
   <div class="result-hero">
     <div class="result-score-ring" id="result-ring">
       <div class="result-score-num" id="result-score">—</div>
@@ -243,25 +342,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
+<!-- HISTÓRICO -->
 <div class="screen" id="s-history">
   <div class="header"><button class="header-back" onclick="goHome()">←</button><h1>Histórico</h1></div>
   <div class="hist-filters" id="hist-filters"></div>
   <div class="hist-body" id="hist-body"></div>
 </div>
 
+<!-- ADMIN -->
 <div class="screen" id="s-admin">
   <div class="header"><button class="header-back" onclick="goHome()">←</button><h1>Administração</h1></div>
   <div class="admin-body">
+    <div class="admin-section">
+      <div class="section-title">Usuários</div>
+      <div class="admin-card" onclick="goAdminUsers()">
+        <div class="admin-card-icon">👥</div>
+        <div class="admin-card-info">
+          <div class="admin-card-name">Gerenciar Usuários</div>
+          <div class="admin-card-meta" id="admin-users-meta">Criar logins e vincular lojas</div>
+        </div>
+        <div class="admin-card-arrow">›</div>
+      </div>
+    </div>
     <div class="admin-section">
       <div class="section-title">Checklists — Editar Perguntas e Pesos</div>
       <div id="admin-cl-list"></div>
     </div>
     <div class="admin-section">
-      <div class="section-title">Conta</div>
+      <div class="section-title">Minha Senha</div>
       <div class="pwd-row">
         <label>Nova Senha</label>
         <input type="password" id="admin-new-pass" placeholder="Digite a nova senha">
-        <button class="btn-save-pwd" onclick="changePassword()">Salvar Senha</button>
+        <button class="btn-save-pwd" onclick="changeMyPassword()">Salvar Senha</button>
       </div>
     </div>
     <div class="admin-section">
@@ -275,55 +387,495 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
+<!-- ADMIN — EDITOR DE CHECKLIST -->
 <div class="screen" id="s-admin-type">
   <div class="header"><button class="header-back" onclick="backFromAdminType()">←</button><h1 id="admin-type-title">Editar Checklist</h1></div>
   <div class="admin-type-body" id="admin-type-body"></div>
   <div class="cl-type-footer"><button class="btn-save-type" onclick="saveChecklistType()">💾 Salvar Alterações</button></div>
 </div>
 
+<!-- ADMIN — USUÁRIOS -->
+<div class="screen" id="s-admin-users">
+  <div class="header"><button class="header-back" onclick="goAdmin()">←</button><h1>Usuários</h1></div>
+  <div class="admin-body">
+    <div class="admin-section">
+      <div class="section-title">Usuários Cadastrados</div>
+      <div id="users-list"></div>
+    </div>
+    <div class="admin-section">
+      <div class="section-title">Novo Usuário</div>
+      <div class="nu-form">
+        <div>
+          <span class="nu-form-label">Nome completo</span>
+          <input class="nu-input" id="nu-name" placeholder="Ex: João Silva" autocomplete="off">
+        </div>
+        <div>
+          <span class="nu-form-label">Login (usuário)</span>
+          <input class="nu-input" id="nu-user" placeholder="Ex: joao.silva" autocomplete="off" autocapitalize="none">
+        </div>
+        <div>
+          <span class="nu-form-label">Senha</span>
+          <input class="nu-input" type="password" id="nu-pass" placeholder="Mínimo 4 caracteres" autocomplete="new-password">
+        </div>
+        <div>
+          <span class="nu-form-label">Loja vinculada</span>
+          <select class="nu-input" id="nu-store">
+            <option value="">— Todas as lojas (Master) —</option>
+          </select>
+        </div>
+        <div>
+          <span class="nu-form-label">Perfil</span>
+          <select class="nu-input" id="nu-role">
+            <option value="user">Usuário (somente sua loja)</option>
+            <option value="master">Master (todas as lojas + admin)</option>
+          </select>
+        </div>
+        <button class="btn-save-user" onclick="saveNewUser()">✅ Criar Usuário</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <script>
 const STORES=['Lapa','Londrina','Maringá','Paranaguá','Rui Barbosa','Água Verde','Santa Felicidade','Joinville 1','Bacacheri','Joinville 2','Jardim das Américas','Fanny','Joinville 3','Joinville 4','Paranavaí'];
-const DEFAULT_CL=[{id:'vm',name:'Visual Merchandising',icon:'🏮',hasStore:true,hasPerson:false,areas:[{id:'a1',name:'Loja Geral',questions:[{id:'q1',text:'Os cartazes estão de acordo com o padrão estabelecido pelo Marketing (tamanho, dinâmica e descrição correta)?',weight:1},{id:'q2',text:'As campanhas promocionais, sorteios e demais ações vigentes estão em destaque na loja?',weight:1},{id:'q3',text:'Os produtos do encarte e as ofertas divulgadas no canal de promoções estão devidamente expostos?',weight:1},{id:'q4',text:'Os produtos definidos para ilhas, pontas de gôndola e laterais estão organizados e padronizados?',weight:1},{id:'q5',text:'O VPI da campanha atual está correto e sendo oferecido pelas operadoras?',weight:1},{id:'q6',text:'As telas, monitores, placas e testeiras estão de acordo com os acordos comerciais definidos pelo Marketing e Comercial?',weight:1},{id:'q7',text:'A vitrine da loja está organizada e com preços visíveis?',weight:1},{id:'q8',text:'As pontas de gôndola estão ambientadas com itens correlatos?',weight:1},{id:'q9',text:'Os cross merchandising estão abastecidos e com preços visíveis?',weight:1},{id:'q10',text:'O checkstand (frente de caixa) está organizado?',weight:1},{id:'q11',text:'A sazonal está organizada e a ilha montada dentro do padrão?',weight:1},{id:'q12',text:'As ofertas da TV estão sinalizadas e destacadas na frente da loja?',weight:1},{id:'q13',text:'Os cestos estão abastecidos e com preços visíveis?',weight:1},{id:'q14',text:'A área de têxtil (camas, toalhas, cortinas etc.) está bem dobrada e organizada?',weight:1},{id:'q15',text:'Os corredores estão organizados e sem obstruções para o cliente?',weight:1}]}]},{id:'ad_gerente',name:'AD — Gerente de Loja',icon:'👔',hasStore:true,hasPerson:true,areas:[{id:'a1',name:'Loja Geral',questions:[{id:'q1',text:'Motivação da Equipe: Consegue motivar e inspirar os colaboradores para alcançar resultados.',weight:1},{id:'q2',text:'Delegação de tarefas: Distribui responsabilidades de forma clara e eficiente com acompanhamento.',weight:1},{id:'q3',text:'Comunicação: Transmite informações com clareza e assertividade.',weight:1},{id:'q4',text:'Gestão de conflitos: Resolve conflitos internos com imparcialidade e equilíbrio dentro das normas da empresa.',weight:1},{id:'q5',text:'Exemplo profissional: Serve de modelo de conduta, sendo um líder servidor.',weight:1},{id:'q6',text:'Organização da Loja: Consegue manter limpeza, exposição agressiva e layout padrão da empresa.',weight:1},{id:'q7',text:'Controle de estoque: Acompanha validade, ruptura, pedidos, mantendo a loja bem ranqueada nas avaliações.',weight:1},{id:'q8',text:'Redução de quebras: Consegue fazer troca de produtos vencidos, consegue bonificação para vender antes da validade, aciona o comercial para evitar perdas.',weight:1},{id:'q9',text:'Cumprimento de normas internas: Segue os procedimentos e políticas da empresa.',weight:1},{id:'q10',text:'Atendimento ao cliente: Demonstra cortesia, rapidez, e solução de problemas, em horário de pico coloca todo time no atendimento.',weight:1},{id:'q11',text:'Feedback da equipe e clientes: Recebe e aplica sugestões de forma construtiva.',weight:1},{id:'q12',text:'Resultados de Checklist: Está entregando o resultado satisfatório.',weight:1},{id:'q13',text:'Resultados de vendas: Está entregando as metas de vendas.',weight:1},{id:'q14',text:'Crescimento profissional: Precisa de novos treinamentos.',weight:1},{id:'q15',text:'Satisfação da equipe: Seu time está engajado com sua liderança, pouca rotatividade, poucas faltas ao trabalho.',weight:1},{id:'q16',text:'Reunião de piso: Participa de forma motivadora, apresenta novos produtos, elogia o time, comunica recados importantes.',weight:1},{id:'q17',text:'Apresentação pessoal: Usa roupas adequadas à função.',weight:1},{id:'q18',text:'Senso de urgência: Sempre responde aos desafios e solicitações com prontidão, priorizando adequadamente as tarefas.',weight:1},{id:'q19',text:'Sistemas: Tem domínio dos sistemas: TOTVS, Visualmix e QLIK.',weight:1},{id:'q20',text:'Tomada de decisão: Toma decisões assertivas e no tempo adequado.',weight:1},{id:'q21',text:'Rentabilidade da loja: Mantém equilíbrio entre custos e lucros, otimizando resultados.',weight:1},{id:'q22',text:'Gestão de indicadores (KPIs): Monitora e age sobre indicadores operacionais e financeiros.',weight:1},{id:'q23',text:'Apresentação da equipe: Zela pela postura e aparência dos colaboradores.',weight:1},{id:'q24',text:'Capacitação da equipe: Investe tempo no treinamento e crescimento profissional dos colaboradores.',weight:1},{id:'q25',text:'Inovação e melhorias: Propõe e implementa novas ideias para melhorar o desempenho da loja.',weight:1},{id:'q26',text:'Adaptação a mudanças: Reage bem a novas políticas, tecnologias e desafios.',weight:1},{id:'q27',text:'Visão estratégica: Planeja o crescimento e sustentabilidade da loja através da leitura dos relatórios gerenciais.',weight:1}]}]},{id:'ad_encarregado',name:'AD — Encarregado',icon:'🗂',hasStore:true,hasPerson:true,areas:[{id:'a1',name:'Loja Geral',questions:[{id:'q1',text:'Motivação da Equipe: Estimula e engaja os colaboradores do setor.',weight:1},{id:'q2',text:'Distribuição de tarefas: Organiza e distribui entre seus liderados o trabalho de forma justa e eficiente.',weight:1},{id:'q3',text:'Comunicação: Transmite informações com clareza e assertividade.',weight:1},{id:'q4',text:'Resolução de conflitos: Lida com divergências com equilíbrio emocional, rapidez e dentro das normas da empresa.',weight:1},{id:'q5',text:'Exemplo profissional: Serve de modelo de conduta, sendo um líder servidor.',weight:1},{id:'q6',text:'Organização do setor: Consegue manter limpeza, exposição agressiva e layout padrão da empresa.',weight:1},{id:'q7',text:'Controle de estoque: Acompanha validade, ruptura, pedidos, mantendo a loja bem ranqueada nas avaliações.',weight:1},{id:'q8',text:'Redução de quebras: Consegue fazer troca de produtos vencidos, consegue bonificação para vender antes da validade, aciona o comercial para evitar perdas.',weight:1},{id:'q9',text:'Cumprimento de normas internas: Segue os procedimentos e políticas da empresa.',weight:1},{id:'q10',text:'Atendimento ao cliente: Demonstra cortesia, rapidez, e solução de problemas, em horário de pico coloca todo time no atendimento.',weight:1},{id:'q11',text:'Feedback da equipe e clientes: Recebe e aplica sugestões de forma construtiva.',weight:1},{id:'q12',text:'Trabalho em equipe com outros setores: Colabora com colegas de outros departamentos e gerência.',weight:1},{id:'q13',text:'Iniciativa: Propõe melhorias e novas ideias para o setor.',weight:1},{id:'q14',text:'Resultados de Checklist: Está entregando o resultado satisfatório.',weight:1},{id:'q15',text:'Resultados de vendas: Está entregando as metas de vendas.',weight:1},{id:'q16',text:'Crescimento profissional: Precisa de novos treinamentos.',weight:1},{id:'q17',text:'Satisfação da equipe: Seu time está engajado com sua liderança, pouca rotatividade, poucas faltas ao trabalho.',weight:1},{id:'q18',text:'Reunião de piso: Participa de forma motivadora, apresenta novos produtos, elogia o time, comunica recados importantes.',weight:1},{id:'q19',text:'Apresentação pessoal: Uniforme limpo, crachá e higiene pessoal.',weight:1},{id:'q20',text:'Senso de urgência: Sempre responde aos desafios e solicitações com prontidão, priorizando adequadamente as tarefas.',weight:1},{id:'q21',text:'Planejamento estratégico: Através dos relatórios gerenciais, monta plano de ação e aplica no setor para melhoria dos resultados.',weight:1},{id:'q22',text:'Sistemas: Tem domínio dos sistemas: TOTVS, Visualmix e QLIK.',weight:1},{id:'q23',text:'O encarregado domina o setor de frente de caixa.',weight:1},{id:'q24',text:'O encarregado consegue entregar o depósito limpo, organizado e separado por fornecedor.',weight:2},{id:'q25',text:'O encarregado tem atuado para manter a loja limpa em todos os setores, inclusive áreas administrativa e de uso dos colaboradores.',weight:1},{id:'q26',text:'O encarregado domina o sistema e o modo operante de realizar pedidos PBL e CD usando todas as ferramentas de sistema.',weight:1}]}]},{id:'ad_supervisor',name:'AD — Supervisor',icon:'📋',hasStore:true,hasPerson:true,areas:[{id:'a1',name:'Loja Geral',questions:[{id:'q1',text:'Motivação da Equipe: Estimula e engaja os colaboradores do setor.',weight:1},{id:'q2',text:'Distribuição de tarefas: Organiza e distribui entre seus liderados o trabalho de forma justa e eficiente.',weight:1},{id:'q3',text:'Comunicação: Transmite informações com clareza e assertividade.',weight:1},{id:'q4',text:'Resolução de conflitos: Lida com divergências com equilíbrio emocional, rapidez e dentro das normas da empresa.',weight:1},{id:'q5',text:'Exemplo profissional: Serve de modelo de conduta, sendo um líder servidor.',weight:1},{id:'q6',text:'Organização do setor: Consegue manter limpeza, exposição agressiva e layout padrão da empresa.',weight:1},{id:'q7',text:'Controle de estoque: Acompanha validade, ruptura, pedidos, mantendo a loja bem ranqueada nas avaliações.',weight:1},{id:'q8',text:'Redução de quebras: Consegue fazer troca de produtos vencidos, consegue bonificação para vender antes da validade, aciona o comercial para evitar perdas.',weight:1},{id:'q9',text:'Cumprimento de normas internas: Segue os procedimentos e políticas da empresa.',weight:1},{id:'q10',text:'Atendimento ao cliente: Demonstra cortesia, rapidez, e solução de problemas, em horário de pico coloca todo time no atendimento.',weight:1},{id:'q11',text:'Feedback da equipe e clientes: Recebe e aplica sugestões de forma construtiva.',weight:1},{id:'q12',text:'Trabalho em equipe com outros setores: Colabora com colegas de outros departamentos e gerência.',weight:1},{id:'q13',text:'Iniciativa: Propõe melhorias e novas ideias para o setor.',weight:1},{id:'q14',text:'Resultados de Checklist: Está entregando o resultado satisfatório.',weight:1},{id:'q15',text:'Resultados de vendas: Está entregando as metas de vendas.',weight:1},{id:'q16',text:'Crescimento profissional: Precisa de novos treinamentos.',weight:1},{id:'q17',text:'Satisfação da equipe: Seu time está engajado com sua liderança, pouca rotatividade, poucas faltas ao trabalho.',weight:1},{id:'q18',text:'Reunião de piso: Participa de forma motivadora, apresenta novos produtos, elogia o time, comunica recados importantes.',weight:1},{id:'q19',text:'Apresentação pessoal: Uniforme limpo, crachá e higiene pessoal.',weight:1},{id:'q20',text:'Senso de urgência: Sempre responde aos desafios e solicitações com prontidão, priorizando adequadamente as tarefas.',weight:1},{id:'q21',text:'Planejamento estratégico: Através dos relatórios gerenciais, monta plano de ação e aplica no setor para melhoria dos resultados.',weight:1},{id:'q22',text:'Sistemas: Tem domínio dos sistemas: TOTVS, Visualmix e QLIK.',weight:1}]}]},{id:'ad_sup_caixa',name:'AD — Supervisor de Caixa',icon:'💳',hasStore:true,hasPerson:true,areas:[{id:'a1',name:'Loja Geral',questions:[{id:'q1',text:'Motivação da Equipe: Estimula e engaja os colaboradores do setor, dando o exemplo de cumprimentar os clientes e colegas de trabalho.',weight:1},{id:'q2',text:'Distribuição de tarefas: Organiza e distribui entre seus liderados o trabalho de forma justa e eficiente, fazendo escalas de operadoras, rodízio dos PDVs e rodízio de ajudar na loja.',weight:1},{id:'q3',text:'Comunicação: Transmite informações com clareza e assertividade.',weight:1},{id:'q4',text:'Resolução de conflitos: Lida com divergências com equilíbrio emocional, rapidez e dentro das normas da empresa.',weight:1},{id:'q5',text:'Exemplo profissional: Serve de modelo de conduta, sendo um líder servidor.',weight:1},{id:'q6',text:'Organização do setor: Consegue manter limpeza do setor, piso, PDVs, balcão de atendimento.',weight:1},{id:'q7',text:'Controle de estoque: Acompanha validade, ruptura, pedidos, mantendo a loja bem ranqueada nas avaliações.',weight:1},{id:'q8',text:'Redução de quebras: Consegue fazer troca de produtos vencidos, consegue bonificação para vender antes da validade, aciona o comercial para evitar perdas.',weight:1},{id:'q9',text:'Cumprimento de normas internas: Segue os procedimentos e políticas da empresa.',weight:1},{id:'q10',text:'Atendimento ao cliente: Demonstra cortesia, rapidez, e solução de problemas, em horário de pico coloca todo time no atendimento.',weight:1},{id:'q11',text:'Feedback da equipe e clientes: Recebe e aplica sugestões de forma construtiva.',weight:1},{id:'q12',text:'Trabalho em equipe com outros setores: Colabora com colegas de outros departamentos e gerência.',weight:1},{id:'q13',text:'Iniciativa: Propõe melhorias e novas ideias para o setor.',weight:1},{id:'q14',text:'Resultados de Checklist: Está entregando o resultado satisfatório.',weight:1},{id:'q15',text:'Crescimento profissional: Precisa de novos treinamentos.',weight:1},{id:'q16',text:'Satisfação da equipe: Seu time está engajado com sua liderança, pouca rotatividade, poucas faltas ao trabalho.',weight:1},{id:'q17',text:'Reunião de piso: Participa de forma motivadora, elogia o time, comunica recados importantes da frente de caixa sobre melhorar o atendimento.',weight:1},{id:'q18',text:'Apresentação pessoal: Uniforme limpo, crachá e higiene pessoal.',weight:1},{id:'q19',text:'Senso de urgência: Sempre responde aos desafios e solicitações com prontidão, priorizando adequadamente as tarefas.',weight:1},{id:'q20',text:'Planejamento estratégico: Planeja a reunião mensal com as operadoras, elogiando os pontos fortes e dando sugestões de melhorar as oportunidades de atendimento.',weight:1},{id:'q21',text:'Sistemas: Tem domínio dos sistemas TOTVS e Visualmix para emissão de NF, devolução, quebras e tudo que o setor necessita.',weight:1},{id:'q22',text:'Exemplo: A Supervisora de Caixa quando opera o PDV, atende no padrão, cumprimentando, fazendo a pergunta "encontrou tudo que procurava?".',weight:1},{id:'q23',text:'Postura: O Supervisor fica postado na frente de caixa de modo que consegue fiscalizar os monitores para verificar se todos os produtos foram registrados.',weight:1},{id:'q24',text:'Postura: O Supervisor dá o exemplo de não ficar de conversa com outros supervisores a ponto de deixar as operadoras sem atendimento e sem fiscalização de registro de produtos.',weight:1},{id:'q25',text:'Pontualidade: O Supervisor chega no seu horário de trabalho.',weight:1},{id:'q26',text:'Assiduidade: O Supervisor não tem faltas ao trabalho sem justificativa.',weight:1},{id:'q27',text:'Liderança: O Supervisor chama as operadoras que não estão atendendo no padrão para dar feedback separado, com a presença do Subgerente, Encarregado ou Gerente.',weight:1},{id:'q28',text:'Liderança: O Supervisor incentiva seu time a cadastro Clube, venda VPI, falando em separado com as que não têm boa performance.',weight:1}]}]},{id:'ad_fiscal',name:'AD — Fiscal de Loja',icon:'🔍',hasStore:true,hasPerson:true,areas:[{id:'a1',name:'Loja Geral',questions:[{id:'q1',text:'Adaptação à cultura da empresa: O colaborador está motivado na empresa desempenhando suas funções de modo satisfatório adaptado à cultura da empresa.',weight:1},{id:'q2',text:'Relacionamento Interpessoal: O colaborador se comunica bem com seus colegas e líderes.',weight:1},{id:'q3',text:'Atendimento ao cliente: O colaborador atende no padrão da empresa, dando informações corretas, chamando um colaborador para atender.',weight:1},{id:'q4',text:'Trabalho em equipe: O colaborador ajuda seus colegas quando tem necessidade.',weight:1},{id:'q5',text:'Pontualidade: O colaborador chega no horário, faz uma hora de intervalo e não excede a duas horas extras por dia.',weight:1},{id:'q6',text:'Apresentação pessoal: Uniforme limpo, crachá e higiene pessoal.',weight:1},{id:'q7',text:'Postura: O colaborador se mantém atento, fazendo ronda sem conversas com colaboradores.',weight:1},{id:'q8',text:'Assiduidade: O colaborador chega no horário, faz uma hora de intervalo, e não falta ao trabalho.',weight:1},{id:'q9',text:'O colaborador precisa de treinamento para melhorar performance.',weight:1},{id:'q10',text:'Abordagem: O colaborador faz a abordagem ao cliente de reconhecimento facial oferecendo cestinha e perguntando se deseja ajuda.',weight:1},{id:'q11',text:'Comunicação HT: O colaborador usa o rádio HT de forma adequada: volume, código, comunicação apenas de trabalho.',weight:1},{id:'q12',text:'Recuperação de Furtos: O colaborador tem recuperado itens que seriam furtados.',weight:1},{id:'q13',text:'Planilha: O colaborador anota diariamente na planilha de recuperados a quantidade e valores das mercadorias recuperadas.',weight:1},{id:'q14',text:'Portaria: O colaborador quando fica no posto da porta fica atento e passa pelo rádio HT os clientes suspeitos aos colegas.',weight:1}]}]},{id:'ad_operadora',name:'AD — Operadora de Caixa',icon:'💰',hasStore:true,hasPerson:true,areas:[{id:'a1',name:'Loja Geral',questions:[{id:'q1',text:'Motivação: O colaborador está motivado na empresa desempenhando suas funções de modo satisfatório.',weight:1},{id:'q2',text:'Relacionamento interpessoal: O colaborador se comunica bem com seus colegas e líderes.',weight:1},{id:'q3',text:'Atendimento ao Cliente: O colaborador cumprimenta o cliente, pergunta se encontrou tudo que procurava e agradece pela compra.',weight:1},{id:'q4',text:'Organização e limpeza do setor: O colaborador consegue manter limpo e organizado seu checkout.',weight:1},{id:'q5',text:'Agilidade no caixa: O colaborador atende com cortesia, agilidade e empacota as compras do cliente.',weight:1},{id:'q6',text:'Adaptação à cultura da empresa: O colaborador se adaptou à cultura da empresa.',weight:1},{id:'q7',text:'Pontualidade: O colaborador chega no horário, faz uma hora de intervalo e não excede a duas horas extras.',weight:1},{id:'q8',text:'Apresentação pessoal: Uniforme limpo, crachá e higiene pessoal.',weight:1},{id:'q9',text:'Assiduidade: O colaborador não falta ao trabalho.',weight:1},{id:'q10',text:'Treinamento: O colaborador precisa de treinamento adicional.',weight:1}]}]},{id:'tesouraria',name:'Tesouraria — Frente de Caixa',icon:'🏦',hasStore:true,hasPerson:false,areas:[{id:'a1',name:'Controles Financeiros',questions:[{id:'q1',text:'Verificar se os valores dos cofres das Supervisoras e Gerenciais de caixa estão corretos.',weight:2},{id:'q2',text:'Verificar se cada gaveta tem apenas um responsável.',weight:1},{id:'q3',text:'Verificar se as gavetas de colaboradores que saíram da loja foram comunicadas à tesouraria.',weight:1},{id:'q4',text:'Verificar se os borderôs estão sendo preenchidos corretamente com número e nome legível e lançados corretamente no sistema.',weight:1},{id:'q5',text:'Os gerentes estão assinando a planilha de cupom cancelado, após a justificativa das Supervisoras, e está sendo postado corretamente no dia correto.',weight:1},{id:'q6',text:'A planilha de divergência de preços está sendo preenchida, justificada e assinada pelos Supervisores, gerentes e subgerentes responsáveis e sendo postada no dia correto.',weight:1},{id:'q7',text:'As sangrias estão sendo feitas até R$ 500,00, com exceção de compras acima deste valor.',weight:2},{id:'q8',text:'As devoluções de dinheiro ao cliente estão sendo preenchidas corretamente (nome, CPF e produto devolvido) e sendo lançadas corretamente no fundo de devolução.',weight:1},{id:'q9',text:'O Gerente assina e arquiva o relatório de sobras e faltas mensalmente.',weight:1},{id:'q10',text:'Os descontos estão sendo aplicados corretamente, sempre autorizados pelos responsáveis: gerentes, subs e encarregados.',weight:1}]},{id:'a2',name:'Atendimento no Caixa',questions:[{id:'q11',text:'As operadoras cumprimentam os clientes com simpatia.',weight:1},{id:'q12',text:'Os PDVs estão limpos.',weight:1},{id:'q13',text:'Pergunta se deseja CPF na nota.',weight:1},{id:'q14',text:'Oferece vantagens Clube Casa China.',weight:1},{id:'q15',text:'As operadoras estão agradecendo pela compra: "A Casa China agradece..."',weight:2},{id:'q16',text:'Registra e embala adequadamente.',weight:1},{id:'q17',text:'A operadora está perguntando se encontrou tudo que procurava e anota na planilha.',weight:1},{id:'q18',text:'As operadoras estão com o kit de atendimento (caneta, calculadora, pano de limpeza e grampeador).',weight:1}]},{id:'a3',name:'Gestão da Frente de Caixa',questions:[{id:'q19',text:'Existe rodízio de escala de operadoras nos PDVs.',weight:1},{id:'q20',text:'Existe escala de horário para café.',weight:1},{id:'q21',text:'As fotos estão sendo tiradas no OneDrive com qualidade.',weight:1},{id:'q22',text:'O Gerente faz reunião com as operadoras e com as Supervisoras de caixa uma vez por mês.',weight:1},{id:'q23',text:'As Supervisoras de caixa se posicionam de forma a visualizar o registro das operadoras pela tela do PDV.',weight:1},{id:'q24',text:'As Supervisoras chamam apoios quando tem fila, pela ordem: Subgerente, Gerente e por último o Encarregado.',weight:1}]}]},{id:'contagens',name:'Contagens Mensais',icon:'🔢',hasStore:true,hasPerson:false,areas:[{id:'a1',name:'Contagens — Supervisoras',questions:[{id:'q1',text:'A Loja realizou as contagens dos cofres de troco?',weight:1},{id:'q2',text:'A Loja realizou a contagem do Cofre Principal/Central?',weight:1},{id:'q3',text:'O Formulário de Contagem Mensal — Supervisoras foi preenchido com os dados das contagens?',weight:1},{id:'q4',text:'O gerente da loja e o responsável pela contagem assinaram o Formulário de Contagem Mensal — Supervisoras?',weight:1},{id:'q5',text:'Formulário de Contagem Mensal — Supervisoras pronto para enviar?',weight:1}]},{id:'a2',name:'Contagens — Operadoras',questions:[{id:'q6',text:'A Loja realizou as contagens dos caixas/gavetas das operadoras?',weight:1},{id:'q7',text:'As gavetas sem uso/de reserva foram contadas?',weight:1},{id:'q8',text:'O Formulário de Contagem Mensal — Operadoras foi preenchido com os dados das contagens?',weight:1},{id:'q9',text:'O gerente da loja e o responsável pela contagem assinaram o Formulário de Contagem Mensal — Operadoras?',weight:1},{id:'q10',text:'Formulário de Contagem Mensal — Operadoras pronto para enviar?',weight:1}]}]},{id:'inventario',name:'Inventário Pinpads & POS',icon:'💻',hasStore:true,hasPerson:false,areas:[{id:'a1',name:'Inventário de Equipamentos',questions:[{id:'q1',text:'Informado Pinpad do PDV001?',weight:1},{id:'q2',text:'Informado Pinpad do PDV002?',weight:1},{id:'q3',text:'Informado Pinpad do PDV003?',weight:1},{id:'q4',text:'Informado Pinpad do PDV004?',weight:1},{id:'q5',text:'Informado Pinpad do PDV005?',weight:1},{id:'q6',text:'Informado Pinpad do PDV006?',weight:1},{id:'q7',text:'Informado POS001?',weight:1},{id:'q8',text:'Informado POS002?',weight:1},{id:'q9',text:'Informado POS003?',weight:1},{id:'q10',text:'Informado POS004?',weight:1},{id:'q11',text:'Informado POS005?',weight:1},{id:'q12',text:'Informado POS006?',weight:1},{id:'q13',text:'Informado POS007?',weight:1},{id:'q14',text:'Informado o SENFF?',weight:1},{id:'q15',text:'Informado Pinpad Reserva 001?',weight:1},{id:'q16',text:'Informado Pinpad Reserva 002?',weight:1}]}]}];
-let checklists=[],evaluations=[],currentEval=null,editingTypeId=null,editingCl=null,histFilter='all',viewingEval=null;
-function loadData(){try{const c=localStorage.getItem('cc2_cl');checklists=c?JSON.parse(c):JSON.parse(JSON.stringify(DEFAULT_CL));const e=localStorage.getItem('cc2_ev');evaluations=e?JSON.parse(e):[]}catch(x){checklists=JSON.parse(JSON.stringify(DEFAULT_CL));evaluations=[]}}
+
+const DEFAULT_USERS=[{id:'u0',name:'Master',username:'master',pass:'master123',store:null,role:'master'}];
+
+const DEFAULT_CL=[
+{id:'vm',name:'Visual Merchandising',icon:'🏮',hasStore:true,hasPerson:false,areas:[
+  {id:'a1',name:'Comunicação Visual',questions:[
+    {id:'q1',text:'Os cartazes estão de acordo com o padrão estabelecido pelo Marketing (tamanho, dinâmica e descrição correta)?',weight:1},
+    {id:'q2',text:'As campanhas promocionais, sorteios e demais ações vigentes estão em destaque na loja?',weight:1},
+    {id:'q3',text:'Os produtos do encarte e as ofertas divulgadas no canal de promoções estão devidamente expostos?',weight:1},
+    {id:'q4',text:'Os produtos definidos para ilhas, pontas de gôndola e laterais estão organizados e padronizados?',weight:1},
+    {id:'q5',text:'O VPI da campanha atual está correto e sendo oferecido pelas operadoras?',weight:1},
+    {id:'q6',text:'As telas, monitores, placas e testeiras estão de acordo com os acordos comerciais definidos pelo Marketing e Comercial?',weight:1}
+  ]},
+  {id:'a2',name:'Exposição e Layout',questions:[
+    {id:'q7',text:'A vitrine da loja está organizada e com preços visíveis?',weight:1},
+    {id:'q8',text:'As pontas de gôndola estão ambientadas com itens correlatos?',weight:1},
+    {id:'q9',text:'Os cross merchandising estão abastecidos e com preços visíveis?',weight:1},
+    {id:'q10',text:'O checkstand (frente de caixa) está organizado?',weight:1},
+    {id:'q11',text:'A sazonal está organizada e a ilha montada dentro do padrão?',weight:1},
+    {id:'q12',text:'As ofertas da TV estão sinalizadas e destacadas na frente da loja?',weight:1},
+    {id:'q13',text:'Os cestos estão abastecidos e com preços visíveis?',weight:1}
+  ]},
+  {id:'a3',name:'Organização e Ambiente',questions:[
+    {id:'q14',text:'A área de têxtil (camas, toalhas, cortinas etc.) está bem dobrada e organizada?',weight:1},
+    {id:'q15',text:'Os corredores estão organizados e sem obstruções para o cliente?',weight:1}
+  ]}
+]},
+{id:'ad_gerente',name:'AD — Gerente de Loja',icon:'👔',hasStore:true,hasPerson:true,areas:[
+  {id:'a1',name:'Liderança e Pessoas',questions:[
+    {id:'q1',text:'Motivação da Equipe: Consegue motivar e inspirar os colaboradores para alcançar resultados.',weight:1},
+    {id:'q2',text:'Delegação de tarefas: Distribui responsabilidades de forma clara e eficiente com acompanhamento.',weight:1},
+    {id:'q3',text:'Comunicação: Transmite informações com clareza e assertividade.',weight:1},
+    {id:'q4',text:'Gestão de conflitos: Resolve conflitos internos com imparcialidade e equilíbrio dentro das normas da empresa.',weight:1},
+    {id:'q5',text:'Exemplo profissional: Serve de modelo de conduta, sendo um líder servidor.',weight:1},
+    {id:'q11',text:'Feedback da equipe e clientes: Recebe e aplica sugestões de forma construtiva.',weight:1},
+    {id:'q15',text:'Satisfação da equipe: Seu time está engajado com sua liderança, pouca rotatividade, poucas faltas ao trabalho.',weight:1},
+    {id:'q16',text:'Reunião de piso: Participa de forma motivadora, apresenta novos produtos, elogia o time, comunica recados importantes.',weight:1},
+    {id:'q23',text:'Apresentação da equipe: Zela pela postura e aparência dos colaboradores.',weight:1},
+    {id:'q24',text:'Capacitação da equipe: Investe tempo no treinamento e crescimento profissional dos colaboradores.',weight:1}
+  ]},
+  {id:'a2',name:'Gestão Operacional',questions:[
+    {id:'q6',text:'Organização da Loja: Consegue manter limpeza, exposição agressiva e layout padrão da empresa.',weight:1},
+    {id:'q7',text:'Controle de estoque: Acompanha validade, ruptura, pedidos, mantendo a loja bem ranqueada nas avaliações.',weight:1},
+    {id:'q8',text:'Redução de quebras: Consegue fazer troca de produtos vencidos, consegue bonificação para vender antes da validade, aciona o comercial para evitar perdas.',weight:1},
+    {id:'q9',text:'Cumprimento de normas internas: Segue os procedimentos e políticas da empresa.',weight:1},
+    {id:'q10',text:'Atendimento ao cliente: Demonstra cortesia, rapidez, e solução de problemas, em horário de pico coloca todo time no atendimento.',weight:1},
+    {id:'q17',text:'Apresentação pessoal: Usa roupas adequadas à função.',weight:1},
+    {id:'q18',text:'Senso de urgência: Sempre responde aos desafios e solicitações com prontidão, priorizando adequadamente as tarefas.',weight:1},
+    {id:'q19',text:'Sistemas: Tem domínio dos sistemas: TOTVS, Visualmix e QLIK.',weight:1}
+  ]},
+  {id:'a3',name:'Resultados e KPIs',questions:[
+    {id:'q12',text:'Resultados de Checklist: Está entregando o resultado satisfatório.',weight:1},
+    {id:'q13',text:'Resultados de vendas: Está entregando as metas de vendas.',weight:1},
+    {id:'q21',text:'Rentabilidade da loja: Mantém equilíbrio entre custos e lucros, otimizando resultados.',weight:1},
+    {id:'q22',text:'Gestão de indicadores (KPIs): Monitora e age sobre indicadores operacionais e financeiros.',weight:1},
+    {id:'q27',text:'Visão estratégica: Planeja o crescimento e sustentabilidade da loja através da leitura dos relatórios gerenciais.',weight:1}
+  ]},
+  {id:'a4',name:'Desenvolvimento',questions:[
+    {id:'q14',text:'Crescimento profissional: Precisa de novos treinamentos.',weight:1},
+    {id:'q20',text:'Tomada de decisão: Toma decisões assertivas e no tempo adequado.',weight:1},
+    {id:'q25',text:'Inovação e melhorias: Propõe e implementa novas ideias para melhorar o desempenho da loja.',weight:1},
+    {id:'q26',text:'Adaptação a mudanças: Reage bem a novas políticas, tecnologias e desafios.',weight:1}
+  ]}
+]},
+{id:'ad_encarregado',name:'AD — Encarregado',icon:'🗂',hasStore:true,hasPerson:true,areas:[
+  {id:'a1',name:'Liderança e Pessoas',questions:[
+    {id:'q1',text:'Motivação da Equipe: Estimula e engaja os colaboradores do setor.',weight:1},
+    {id:'q2',text:'Distribuição de tarefas: Organiza e distribui entre seus liderados o trabalho de forma justa e eficiente.',weight:1},
+    {id:'q3',text:'Comunicação: Transmite informações com clareza e assertividade.',weight:1},
+    {id:'q4',text:'Resolução de conflitos: Lida com divergências com equilíbrio emocional, rapidez e dentro das normas da empresa.',weight:1},
+    {id:'q5',text:'Exemplo profissional: Serve de modelo de conduta, sendo um líder servidor.',weight:1},
+    {id:'q11',text:'Feedback da equipe e clientes: Recebe e aplica sugestões de forma construtiva.',weight:1},
+    {id:'q12',text:'Trabalho em equipe com outros setores: Colabora com colegas de outros departamentos e gerência.',weight:1},
+    {id:'q17',text:'Satisfação da equipe: Seu time está engajado com sua liderança, pouca rotatividade, poucas faltas ao trabalho.',weight:1},
+    {id:'q18',text:'Reunião de piso: Participa de forma motivadora, apresenta novos produtos, elogia o time, comunica recados importantes.',weight:1}
+  ]},
+  {id:'a2',name:'Gestão Operacional',questions:[
+    {id:'q6',text:'Organização do setor: Consegue manter limpeza, exposição agressiva e layout padrão da empresa.',weight:1},
+    {id:'q7',text:'Controle de estoque: Acompanha validade, ruptura, pedidos, mantendo a loja bem ranqueada nas avaliações.',weight:1},
+    {id:'q8',text:'Redução de quebras: Consegue fazer troca de produtos vencidos, consegue bonificação para vender antes da validade, aciona o comercial para evitar perdas.',weight:1},
+    {id:'q9',text:'Cumprimento de normas internas: Segue os procedimentos e políticas da empresa.',weight:1},
+    {id:'q10',text:'Atendimento ao cliente: Demonstra cortesia, rapidez, e solução de problemas, em horário de pico coloca todo time no atendimento.',weight:1},
+    {id:'q19',text:'Apresentação pessoal: Uniforme limpo, crachá e higiene pessoal.',weight:1},
+    {id:'q20',text:'Senso de urgência: Sempre responde aos desafios e solicitações com prontidão, priorizando adequadamente as tarefas.',weight:1},
+    {id:'q22',text:'Sistemas: Tem domínio dos sistemas: TOTVS, Visualmix e QLIK.',weight:1},
+    {id:'q23',text:'O encarregado domina o setor de frente de caixa.',weight:1},
+    {id:'q24',text:'O encarregado consegue entregar o depósito limpo, organizado e separado por fornecedor.',weight:2},
+    {id:'q25',text:'O encarregado tem atuado para manter a loja limpa em todos os setores, inclusive áreas administrativa e de uso dos colaboradores.',weight:1},
+    {id:'q26',text:'O encarregado domina o sistema e o modo operante de realizar pedidos PBL e CD usando todas as ferramentas de sistema.',weight:1}
+  ]},
+  {id:'a3',name:'Resultados e Iniciativa',questions:[
+    {id:'q13',text:'Iniciativa: Propõe melhorias e novas ideias para o setor.',weight:1},
+    {id:'q14',text:'Resultados de Checklist: Está entregando o resultado satisfatório.',weight:1},
+    {id:'q15',text:'Resultados de vendas: Está entregando as metas de vendas.',weight:1}
+  ]},
+  {id:'a4',name:'Desenvolvimento',questions:[
+    {id:'q16',text:'Crescimento profissional: Precisa de novos treinamentos.',weight:1},
+    {id:'q21',text:'Planejamento estratégico: Através dos relatórios gerenciais, monta plano de ação e aplica no setor para melhoria dos resultados.',weight:1}
+  ]}
+]},
+{id:'ad_supervisor',name:'AD — Supervisor',icon:'📋',hasStore:true,hasPerson:true,areas:[
+  {id:'a1',name:'Liderança e Pessoas',questions:[
+    {id:'q1',text:'Motivação da Equipe: Estimula e engaja os colaboradores do setor.',weight:1},
+    {id:'q2',text:'Distribuição de tarefas: Organiza e distribui entre seus liderados o trabalho de forma justa e eficiente.',weight:1},
+    {id:'q3',text:'Comunicação: Transmite informações com clareza e assertividade.',weight:1},
+    {id:'q4',text:'Resolução de conflitos: Lida com divergências com equilíbrio emocional, rapidez e dentro das normas da empresa.',weight:1},
+    {id:'q5',text:'Exemplo profissional: Serve de modelo de conduta, sendo um líder servidor.',weight:1},
+    {id:'q11',text:'Feedback da equipe e clientes: Recebe e aplica sugestões de forma construtiva.',weight:1},
+    {id:'q12',text:'Trabalho em equipe com outros setores: Colabora com colegas de outros departamentos e gerência.',weight:1},
+    {id:'q17',text:'Satisfação da equipe: Seu time está engajado com sua liderança, pouca rotatividade, poucas faltas ao trabalho.',weight:1},
+    {id:'q18',text:'Reunião de piso: Participa de forma motivadora, apresenta novos produtos, elogia o time, comunica recados importantes.',weight:1}
+  ]},
+  {id:'a2',name:'Gestão Operacional',questions:[
+    {id:'q6',text:'Organização do setor: Consegue manter limpeza, exposição agressiva e layout padrão da empresa.',weight:1},
+    {id:'q7',text:'Controle de estoque: Acompanha validade, ruptura, pedidos, mantendo a loja bem ranqueada nas avaliações.',weight:1},
+    {id:'q8',text:'Redução de quebras: Consegue fazer troca de produtos vencidos, consegue bonificação para vender antes da validade, aciona o comercial para evitar perdas.',weight:1},
+    {id:'q9',text:'Cumprimento de normas internas: Segue os procedimentos e políticas da empresa.',weight:1},
+    {id:'q10',text:'Atendimento ao cliente: Demonstra cortesia, rapidez, e solução de problemas, em horário de pico coloca todo time no atendimento.',weight:1},
+    {id:'q19',text:'Apresentação pessoal: Uniforme limpo, crachá e higiene pessoal.',weight:1},
+    {id:'q20',text:'Senso de urgência: Sempre responde aos desafios e solicitações com prontidão, priorizando adequadamente as tarefas.',weight:1},
+    {id:'q22',text:'Sistemas: Tem domínio dos sistemas: TOTVS, Visualmix e QLIK.',weight:1}
+  ]},
+  {id:'a3',name:'Resultados e Iniciativa',questions:[
+    {id:'q13',text:'Iniciativa: Propõe melhorias e novas ideias para o setor.',weight:1},
+    {id:'q14',text:'Resultados de Checklist: Está entregando o resultado satisfatório.',weight:1},
+    {id:'q15',text:'Resultados de vendas: Está entregando as metas de vendas.',weight:1}
+  ]},
+  {id:'a4',name:'Desenvolvimento',questions:[
+    {id:'q16',text:'Crescimento profissional: Precisa de novos treinamentos.',weight:1},
+    {id:'q21',text:'Planejamento estratégico: Através dos relatórios gerenciais, monta plano de ação e aplica no setor para melhoria dos resultados.',weight:1}
+  ]}
+]},
+{id:'ad_sup_caixa',name:'AD — Supervisor de Caixa',icon:'💳',hasStore:true,hasPerson:true,areas:[
+  {id:'a1',name:'Liderança e Equipe',questions:[
+    {id:'q1',text:'Motivação da Equipe: Estimula e engaja os colaboradores do setor, dando o exemplo de cumprimentar os clientes e colegas de trabalho.',weight:1},
+    {id:'q2',text:'Distribuição de tarefas: Organiza e distribui entre seus liderados o trabalho de forma justa e eficiente, fazendo escalas de operadoras, rodízio dos PDVs e rodízio de ajudar na loja.',weight:1},
+    {id:'q3',text:'Comunicação: Transmite informações com clareza e assertividade.',weight:1},
+    {id:'q4',text:'Resolução de conflitos: Lida com divergências com equilíbrio emocional, rapidez e dentro das normas da empresa.',weight:1},
+    {id:'q5',text:'Exemplo profissional: Serve de modelo de conduta, sendo um líder servidor.',weight:1},
+    {id:'q16',text:'Satisfação da equipe: Seu time está engajado com sua liderança, pouca rotatividade, poucas faltas ao trabalho.',weight:1},
+    {id:'q17',text:'Reunião de piso: Participa de forma motivadora, elogia o time, comunica recados importantes da frente de caixa sobre melhorar o atendimento.',weight:1},
+    {id:'q27',text:'Liderança: O Supervisor chama as operadoras que não estão atendendo no padrão para dar feedback separado, com a presença do Subgerente, Encarregado ou Gerente.',weight:1},
+    {id:'q28',text:'Liderança: O Supervisor incentiva seu time a cadastro Clube, venda VPI, falando em separado com as que não têm boa performance.',weight:1}
+  ]},
+  {id:'a2',name:'Gestão da Frente de Caixa',questions:[
+    {id:'q6',text:'Organização do setor: Consegue manter limpeza do setor, piso, PDVs, balcão de atendimento.',weight:1},
+    {id:'q7',text:'Controle de estoque: Acompanha validade, ruptura, pedidos, mantendo a loja bem ranqueada nas avaliações.',weight:1},
+    {id:'q8',text:'Redução de quebras: Consegue fazer troca de produtos vencidos, consegue bonificação para vender antes da validade, aciona o comercial para evitar perdas.',weight:1},
+    {id:'q13',text:'Iniciativa: Propõe melhorias e novas ideias para o setor.',weight:1},
+    {id:'q19',text:'Senso de urgência: Sempre responde aos desafios e solicitações com prontidão, priorizando adequadamente as tarefas.',weight:1},
+    {id:'q20',text:'Planejamento estratégico: Planeja a reunião mensal com as operadoras, elogiando os pontos fortes e dando sugestões de melhorar as oportunidades de atendimento.',weight:1},
+    {id:'q21',text:'Sistemas: Tem domínio dos sistemas TOTVS e Visualmix para emissão de NF, devolução, quebras e tudo que o setor necessita.',weight:1},
+    {id:'q23',text:'Postura: O Supervisor fica postado na frente de caixa de modo que consegue fiscalizar os monitores para verificar se todos os produtos foram registrados.',weight:1},
+    {id:'q24',text:'Postura: O Supervisor dá o exemplo de não ficar de conversa com outros supervisores a ponto de deixar as operadoras sem atendimento e sem fiscalização de registro de produtos.',weight:1}
+  ]},
+  {id:'a3',name:'Atendimento e Qualidade',questions:[
+    {id:'q9',text:'Cumprimento de normas internas: Segue os procedimentos e políticas da empresa.',weight:1},
+    {id:'q10',text:'Atendimento ao cliente: Demonstra cortesia, rapidez, e solução de problemas, em horário de pico coloca todo time no atendimento.',weight:1},
+    {id:'q11',text:'Feedback da equipe e clientes: Recebe e aplica sugestões de forma construtiva.',weight:1},
+    {id:'q22',text:'Exemplo: A Supervisora de Caixa quando opera o PDV, atende no padrão, cumprimentando, fazendo a pergunta "encontrou tudo que procurava?".',weight:1}
+  ]},
+  {id:'a4',name:'Postura e Assiduidade',questions:[
+    {id:'q12',text:'Trabalho em equipe com outros setores: Colabora com colegas de outros departamentos e gerência.',weight:1},
+    {id:'q14',text:'Resultados de Checklist: Está entregando o resultado satisfatório.',weight:1},
+    {id:'q15',text:'Crescimento profissional: Precisa de novos treinamentos.',weight:1},
+    {id:'q18',text:'Apresentação pessoal: Uniforme limpo, crachá e higiene pessoal.',weight:1},
+    {id:'q25',text:'Pontualidade: O Supervisor chega no seu horário de trabalho.',weight:1},
+    {id:'q26',text:'Assiduidade: O Supervisor não tem faltas ao trabalho sem justificativa.',weight:1}
+  ]}
+]},
+{id:'ad_fiscal',name:'AD — Fiscal de Loja',icon:'🔍',hasStore:true,hasPerson:true,areas:[
+  {id:'a1',name:'Postura e Conduta',questions:[
+    {id:'q1',text:'Adaptação à cultura da empresa: O colaborador está motivado na empresa desempenhando suas funções de modo satisfatório adaptado à cultura da empresa.',weight:1},
+    {id:'q2',text:'Relacionamento Interpessoal: O colaborador se comunica bem com seus colegas e líderes.',weight:1},
+    {id:'q3',text:'Atendimento ao cliente: O colaborador atende no padrão da empresa, dando informações corretas, chamando um colaborador para atender.',weight:1},
+    {id:'q4',text:'Trabalho em equipe: O colaborador ajuda seus colegas quando tem necessidade.',weight:1},
+    {id:'q5',text:'Pontualidade: O colaborador chega no horário, faz uma hora de intervalo e não excede a duas horas extras por dia.',weight:1},
+    {id:'q6',text:'Apresentação pessoal: Uniforme limpo, crachá e higiene pessoal.',weight:1},
+    {id:'q7',text:'Postura: O colaborador se mantém atento, fazendo ronda sem conversas com colaboradores.',weight:1},
+    {id:'q8',text:'Assiduidade: O colaborador chega no horário, faz uma hora de intervalo, e não falta ao trabalho.',weight:1}
+  ]},
+  {id:'a2',name:'Operação de Fiscalização',questions:[
+    {id:'q9',text:'O colaborador precisa de treinamento para melhorar performance.',weight:1},
+    {id:'q10',text:'Abordagem: O colaborador faz a abordagem ao cliente de reconhecimento facial oferecendo cestinha e perguntando se deseja ajuda.',weight:1},
+    {id:'q11',text:'Comunicação HT: O colaborador usa o rádio HT de forma adequada: volume, código, comunicação apenas de trabalho.',weight:1},
+    {id:'q12',text:'Recuperação de Furtos: O colaborador tem recuperado itens que seriam furtados.',weight:1},
+    {id:'q13',text:'Planilha: O colaborador anota diariamente na planilha de recuperados a quantidade e valores das mercadorias recuperadas.',weight:1},
+    {id:'q14',text:'Portaria: O colaborador quando fica no posto da porta fica atento e passa pelo rádio HT os clientes suspeitos aos colegas.',weight:1}
+  ]}
+]},
+{id:'ad_operadora',name:'AD — Operadora de Caixa',icon:'💰',hasStore:true,hasPerson:true,areas:[
+  {id:'a1',name:'Postura e Comportamento',questions:[
+    {id:'q1',text:'Motivação: O colaborador está motivado na empresa desempenhando suas funções de modo satisfatório.',weight:1},
+    {id:'q2',text:'Relacionamento interpessoal: O colaborador se comunica bem com seus colegas e líderes.',weight:1},
+    {id:'q6',text:'Adaptação à cultura da empresa: O colaborador se adaptou à cultura da empresa.',weight:1},
+    {id:'q7',text:'Pontualidade: O colaborador chega no horário, faz uma hora de intervalo e não excede a duas horas extras.',weight:1},
+    {id:'q8',text:'Apresentação pessoal: Uniforme limpo, crachá e higiene pessoal.',weight:1},
+    {id:'q9',text:'Assiduidade: O colaborador não falta ao trabalho.',weight:1},
+    {id:'q10',text:'Treinamento: O colaborador precisa de treinamento adicional.',weight:1}
+  ]},
+  {id:'a2',name:'Atendimento e Operação',questions:[
+    {id:'q3',text:'Atendimento ao Cliente: O colaborador cumprimenta o cliente, pergunta se encontrou tudo que procurava e agradece pela compra.',weight:1},
+    {id:'q4',text:'Organização e limpeza do setor: O colaborador consegue manter limpo e organizado seu checkout.',weight:1},
+    {id:'q5',text:'Agilidade no caixa: O colaborador atende com cortesia, agilidade e empacota as compras do cliente.',weight:1}
+  ]}
+]},
+{id:'tesouraria',name:'Tesouraria — Frente de Caixa',icon:'🏦',hasStore:true,hasPerson:false,areas:[
+  {id:'a1',name:'Controles Financeiros',questions:[
+    {id:'q1',text:'Verificar se os valores dos cofres das Supervisoras e Gerenciais de caixa estão corretos.',weight:2},
+    {id:'q2',text:'Verificar se cada gaveta tem apenas um responsável.',weight:1},
+    {id:'q3',text:'Verificar se as gavetas de colaboradores que saíram da loja foram comunicadas à tesouraria.',weight:1},
+    {id:'q4',text:'Verificar se os borderôs estão sendo preenchidos corretamente com número e nome legível e lançados corretamente no sistema.',weight:1},
+    {id:'q5',text:'Os gerentes estão assinando a planilha de cupom cancelado, após a justificativa das Supervisoras, e está sendo postado corretamente no dia correto.',weight:1},
+    {id:'q6',text:'A planilha de divergência de preços está sendo preenchida, justificada e assinada pelos Supervisores, gerentes e subgerentes responsáveis e sendo postada no dia correto.',weight:1},
+    {id:'q7',text:'As sangrias estão sendo feitas até R$ 500,00, com exceção de compras acima deste valor.',weight:2},
+    {id:'q8',text:'As devoluções de dinheiro ao cliente estão sendo preenchidas corretamente (nome, CPF e produto devolvido) e sendo lançadas corretamente no fundo de devolução.',weight:1},
+    {id:'q9',text:'O Gerente assina e arquiva o relatório de sobras e faltas mensalmente.',weight:1},
+    {id:'q10',text:'Os descontos estão sendo aplicados corretamente, sempre autorizados pelos responsáveis: gerentes, subs e encarregados.',weight:1}
+  ]},
+  {id:'a2',name:'Atendimento no Caixa',questions:[
+    {id:'q11',text:'As operadoras cumprimentam os clientes com simpatia.',weight:1},
+    {id:'q12',text:'Os PDVs estão limpos.',weight:1},
+    {id:'q13',text:'Pergunta se deseja CPF na nota.',weight:1},
+    {id:'q14',text:'Oferece vantagens Clube Casa China.',weight:1},
+    {id:'q15',text:'As operadoras estão agradecendo pela compra: "A Casa China agradece..."',weight:2},
+    {id:'q16',text:'Registra e embala adequadamente.',weight:1},
+    {id:'q17',text:'A operadora está perguntando se encontrou tudo que procurava e anota na planilha.',weight:1},
+    {id:'q18',text:'As operadoras estão com o kit de atendimento (caneta, calculadora, pano de limpeza e grampeador).',weight:1}
+  ]},
+  {id:'a3',name:'Gestão da Frente de Caixa',questions:[
+    {id:'q19',text:'Existe rodízio de escala de operadoras nos PDVs.',weight:1},
+    {id:'q20',text:'Existe escala de horário para café.',weight:1},
+    {id:'q21',text:'As fotos estão sendo tiradas no OneDrive com qualidade.',weight:1},
+    {id:'q22',text:'O Gerente faz reunião com as operadoras e com as Supervisoras de caixa uma vez por mês.',weight:1},
+    {id:'q23',text:'As Supervisoras de caixa se posicionam de forma a visualizar o registro das operadoras pela tela do PDV.',weight:1},
+    {id:'q24',text:'As Supervisoras chamam apoios quando tem fila, pela ordem: Subgerente, Gerente e por último o Encarregado.',weight:1}
+  ]}
+]},
+{id:'contagens',name:'Contagens Mensais',icon:'🔢',hasStore:true,hasPerson:false,areas:[
+  {id:'a1',name:'Contagens — Supervisoras',questions:[
+    {id:'q1',text:'A Loja realizou as contagens dos cofres de troco?',weight:1},
+    {id:'q2',text:'A Loja realizou a contagem do Cofre Principal/Central?',weight:1},
+    {id:'q3',text:'O Formulário de Contagem Mensal — Supervisoras foi preenchido com os dados das contagens?',weight:1},
+    {id:'q4',text:'O gerente da loja e o responsável pela contagem assinaram o Formulário de Contagem Mensal — Supervisoras?',weight:1},
+    {id:'q5',text:'Formulário de Contagem Mensal — Supervisoras pronto para enviar?',weight:1}
+  ]},
+  {id:'a2',name:'Contagens — Operadoras',questions:[
+    {id:'q6',text:'A Loja realizou as contagens dos caixas/gavetas das operadoras?',weight:1},
+    {id:'q7',text:'As gavetas sem uso/de reserva foram contadas?',weight:1},
+    {id:'q8',text:'O Formulário de Contagem Mensal — Operadoras foi preenchido com os dados das contagens?',weight:1},
+    {id:'q9',text:'O gerente da loja e o responsável pela contagem assinaram o Formulário de Contagem Mensal — Operadoras?',weight:1},
+    {id:'q10',text:'Formulário de Contagem Mensal — Operadoras pronto para enviar?',weight:1}
+  ]}
+]},
+{id:'inventario',name:'Inventário Pinpads & POS',icon:'💻',hasStore:true,hasPerson:false,areas:[
+  {id:'a1',name:'Pinpads PDV',questions:[
+    {id:'q1',text:'Informado Pinpad do PDV001?',weight:1},
+    {id:'q2',text:'Informado Pinpad do PDV002?',weight:1},
+    {id:'q3',text:'Informado Pinpad do PDV003?',weight:1},
+    {id:'q4',text:'Informado Pinpad do PDV004?',weight:1},
+    {id:'q5',text:'Informado Pinpad do PDV005?',weight:1},
+    {id:'q6',text:'Informado Pinpad do PDV006?',weight:1}
+  ]},
+  {id:'a2',name:'Equipamentos POS e Reserva',questions:[
+    {id:'q7',text:'Informado POS001?',weight:1},
+    {id:'q8',text:'Informado POS002?',weight:1},
+    {id:'q9',text:'Informado POS003?',weight:1},
+    {id:'q10',text:'Informado POS004?',weight:1},
+    {id:'q11',text:'Informado POS005?',weight:1},
+    {id:'q12',text:'Informado POS006?',weight:1},
+    {id:'q13',text:'Informado POS007?',weight:1},
+    {id:'q14',text:'Informado o SENFF?',weight:1},
+    {id:'q15',text:'Informado Pinpad Reserva 001?',weight:1},
+    {id:'q16',text:'Informado Pinpad Reserva 002?',weight:1}
+  ]}
+]}
+];
+
+let checklists=[],evaluations=[],users=[],currentEval=null,editingTypeId=null,editingCl=null,histFilter='all',viewingEval=null,prevScreen='s-home';
+let currentDashTypeId=null;
+
+/* ─── DATA ─── */
+function loadData(){
+  try{const c=localStorage.getItem('cc2_cl');checklists=c?JSON.parse(c):JSON.parse(JSON.stringify(DEFAULT_CL));const e=localStorage.getItem('cc2_ev');evaluations=e?JSON.parse(e):[]}
+  catch(x){checklists=JSON.parse(JSON.stringify(DEFAULT_CL));evaluations=[]}
+}
 function saveCL(){localStorage.setItem('cc2_cl',JSON.stringify(checklists))}
 function saveEV(){localStorage.setItem('cc2_ev',JSON.stringify(evaluations))}
-function getPass(){return localStorage.getItem('cc2_pass')||'master123'}
-function setPass(p){localStorage.setItem('cc2_pass',p)}
+
+/* ─── USERS ─── */
+function loadUsers(){
+  try{const u=localStorage.getItem('cc2_users');users=u?JSON.parse(u):JSON.parse(JSON.stringify(DEFAULT_USERS))}
+  catch(e){users=JSON.parse(JSON.stringify(DEFAULT_USERS))}
+}
+function saveUsers(){localStorage.setItem('cc2_users',JSON.stringify(users))}
+function getSession(){try{return JSON.parse(localStorage.getItem('cc2_sess'))}catch(e){return null}}
+function setSession(u){localStorage.setItem('cc2_sess',JSON.stringify({id:u.id,name:u.name,store:u.store,role:u.role}))}
+function isMaster(){const s=getSession();return s&&s.role==='master'}
+
+/* ─── AUTH ─── */
+function doLogin(){
+  const un=document.getElementById('li-user').value.trim().toLowerCase();
+  const pw=document.getElementById('li-pass').value;
+  const found=users.find(u=>u.username.toLowerCase()===un&&u.pass===pw);
+  if(found){setSession(found);document.getElementById('li-err').textContent='';goHome()}
+  else{document.getElementById('li-err').textContent='Usuário ou senha incorretos.'}
+}
+function doLogout(){
+  localStorage.removeItem('cc2_sess');
+  document.getElementById('li-user').value='';
+  document.getElementById('li-pass').value='';
+  document.getElementById('li-err').textContent='';
+  showScreen('s-login')
+}
+document.getElementById('li-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+document.getElementById('li-user').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('li-pass').focus()});
+
+/* ─── NAV ─── */
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
 function setNav(id){document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));const el=document.getElementById(id);if(el)el.classList.add('active')}
 function goHome(){renderHome();showScreen('s-home');setNav('nav-home')}
 function goHistory(){renderHistory();showScreen('s-history');setNav('nav-hist')}
-function goAdmin(){renderAdmin();showScreen('s-admin');setNav('nav-admin')}
+function goAdmin(){if(!isMaster()){showToast('Acesso restrito a administradores.');return}renderAdmin();showScreen('s-admin');setNav('nav-admin')}
+function goAdminUsers(){renderAdminUsers();showScreen('s-admin-users')}
 function backFromAdminType(){editingCl=null;goAdmin()}
-function doLogin(){const u=document.getElementById('li-user').value.trim().toLowerCase();const p=document.getElementById('li-pass').value;if((u==='master'||u==='admin')&&p===getPass()){localStorage.setItem('cc2_sess','1');goHome()}else{document.getElementById('li-err').textContent='Usuário ou senha incorretos.'}}
-document.getElementById('li-pass')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+function goBack(){
+  if(prevScreen==='s-cl-dashboard'&&currentDashTypeId){goCLDashboard(currentDashTypeId)}
+  else if(prevScreen==='s-history'){goHistory()}
+  else{goHome()}
+}
+
+/* ─── UTILS ─── */
 function fmtDate(d){if(!d)return'';const[y,m,day]=d.split('-');return day+'/'+m+'/'+y}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+function scColor(v){return v>=80?'score-green':v>=60?'score-yellow':'score-red'}
+
+/* ─── HOME ─── */
 function renderHome(){
+  const sess=getSession();
   const now=new Date();
   document.getElementById('home-date').textContent=now.toLocaleDateString('pt-BR',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('home-user').textContent='👤 '+(sess?sess.name:'Master');
+  document.getElementById('nav-admin').style.display=isMaster()?'flex':'none';
   const grid=document.getElementById('cl-grid');
-  grid.innerHTML=checklists.map(cl=>{const tot=cl.areas.reduce((s,a)=>s+a.questions.length,0);return'<div class="cl-card" onclick="startSetup(\''+cl.id+'\')">'+'<div class="cl-icon">'+cl.icon+'</div><div class="cl-name">'+esc(cl.name)+'</div><div class="cl-count">'+tot+' perguntas</div></div>'}).join('');
-  const recent=[...evaluations].sort((a,b)=>b.id-a.id).slice(0,5);
+  grid.innerHTML=checklists.map(cl=>{const tot=cl.areas.reduce((s,a)=>s+a.questions.length,0);return'<div class="cl-card" onclick="goCLDashboard(\''+cl.id+'\')"><div class="cl-icon">'+cl.icon+'</div><div class="cl-name">'+esc(cl.name)+'</div><div class="cl-count">'+tot+' perguntas · '+cl.areas.length+' área(s)</div></div>'}).join('');
+  const sess2=getSession();
+  let evs=[...evaluations];
+  if(sess2&&sess2.store)evs=evs.filter(e=>e.store===sess2.store);
+  const recent=evs.sort((a,b)=>b.id-a.id).slice(0,5);
   const rl=document.getElementById('recent-list');
   if(!recent.length){rl.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:16px">Nenhuma avaliação ainda</div>';return}
-  rl.innerHTML=recent.map(ev=>{const cl=checklists.find(c=>c.id===ev.typeId);const sc=ev.score;const cls=sc>=80?'score-green':sc>=60?'score-yellow':'score-red';return'<div class="recent-item" onclick="viewEval('+ev.id+')">'+'<div class="recent-icon">'+(cl?cl.icon:'📋')+'</div><div class="recent-info"><div class="recent-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+'</div><div class="recent-meta">'+(cl?esc(cl.name):'?')+' · '+fmtDate(ev.date)+'</div></div>'+'<div class="recent-score '+cls+'">'+sc.toFixed(0)+'%</div></div>'}).join('')
+  rl.innerHTML=recent.map(ev=>{const cl=checklists.find(c=>c.id===ev.typeId);const sc=ev.score;return'<div class="recent-item" onclick="viewEval('+ev.id+',\'s-home\')">'+'<div class="recent-icon">'+(cl?cl.icon:'📋')+'</div><div class="recent-info"><div class="recent-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+'</div><div class="recent-meta">'+(cl?esc(cl.name):'?')+' · '+fmtDate(ev.date)+'</div></div><div class="recent-score '+scColor(sc)+'">'+sc.toFixed(0)+'%</div></div>'}).join('')
 }
+
+/* ─── DASHBOARD ─── */
+function goCLDashboard(typeId){
+  currentDashTypeId=typeId;
+  renderCLDashboard(typeId);
+  showScreen('s-cl-dashboard')
+}
+function renderCLDashboard(typeId){
+  const cl=checklists.find(c=>c.id===typeId);
+  if(!cl)return;
+  const sess=getSession();
+  let evs=evaluations.filter(e=>e.typeId===typeId);
+  if(sess&&sess.store)evs=evs.filter(e=>e.store===sess.store);
+
+  document.getElementById('dash-cl-name').textContent=cl.name;
+  document.getElementById('dash-cl-icon').textContent=cl.icon;
+
+  const total=evs.length;
+  const avgScore=total?evs.reduce((s,e)=>s+e.score,0)/total:0;
+  const cutoff=new Date();cutoff.setDate(cutoff.getDate()-30);
+  const recent30=evs.filter(e=>new Date(e.date)>=cutoff);
+  const avg30=recent30.length?recent30.reduce((s,e)=>s+e.score,0)/recent30.length:null;
+
+  document.getElementById('dash-stats').innerHTML=
+    '<div class="dash-stat"><div class="dash-stat-num">'+total+'</div><div class="dash-stat-label">Avaliações</div></div>'+
+    '<div class="dash-stat"><div class="dash-stat-num '+(total?scColor(avgScore):'')+'">'+(total?avgScore.toFixed(1)+'%':'—')+'</div><div class="dash-stat-label">Média Geral</div></div>'+
+    '<div class="dash-stat"><div class="dash-stat-num '+(avg30!==null?scColor(avg30):'')+'">'+(avg30!==null?avg30.toFixed(1)+'%':'—')+'</div><div class="dash-stat-label">Últimos 30d</div></div>';
+
+  // Area averages
+  const areaAvgs=cl.areas.map(area=>{
+    const relevant=evs.filter(e=>e.areaScores&&e.areaScores.find(a=>a.areaId===area.id));
+    const avg=relevant.length?relevant.reduce((s,e)=>{const as=e.areaScores.find(a=>a.areaId===area.id);return s+(as?as.pct:0)},0)/relevant.length:0;
+    return{name:area.name,pct:avg,count:relevant.length}
+  });
+  document.getElementById('dash-areas').innerHTML=areaAvgs.map(a=>{
+    const col=a.pct>=80?'var(--green)':a.pct>=60?'var(--yellow)':'var(--red)';
+    const pctShow=a.count>0?a.pct.toFixed(0)+'%':'—';
+    return'<div class="dash-area-row"><div class="dash-area-name">'+esc(a.name)+'</div><div class="dash-area-bar-wrap"><div class="dash-area-bar"><div class="dash-area-bar-fill" style="width:'+(a.count>0?a.pct:0)+'%;background:'+col+'"></div></div><div class="dash-area-pct" style="color:'+(a.count>0?col:'var(--muted)')+'">'+pctShow+'</div></div></div>'
+  }).join('');
+
+  // Store ranking (master only)
+  const rankSec=document.getElementById('dash-ranking-sec');
+  if(!sess||!sess.store){
+    rankSec.style.display='';
+    const storeMap={};
+    evs.forEach(e=>{if(!storeMap[e.store])storeMap[e.store]={scores:[],count:0};storeMap[e.store].scores.push(e.score);storeMap[e.store].count++});
+    const ranking=Object.entries(storeMap).map(([store,d])=>({store,avg:d.scores.reduce((a,b)=>a+b,0)/d.scores.length,count:d.count})).sort((a,b)=>b.avg-a.avg).slice(0,10);
+    document.getElementById('dash-ranking').innerHTML=ranking.length?ranking.map((s,i)=>{
+      const medal=i===0?'🥇':i===1?'🥈':i===2?'🥉':'#'+(i+1);
+      return'<div class="dash-rank-row"><span class="dash-rank-pos">'+medal+'</span><span class="dash-rank-store">'+esc(s.store)+'</span><span class="dash-rank-avg '+scColor(s.avg)+'">'+s.avg.toFixed(0)+'%</span><span class="dash-rank-count">'+s.count+'x</span></div>'
+    }).join(''):'<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">Sem dados</div>'
+  }else{rankSec.style.display='none'}
+
+  // Recent
+  const recentEvs=[...evs].sort((a,b)=>b.id-a.id).slice(0,5);
+  document.getElementById('dash-recent').innerHTML=recentEvs.length?recentEvs.map(ev=>{
+    return'<div class="recent-item" onclick="viewEval('+ev.id+',\'s-cl-dashboard\')">'+'<div class="recent-icon">'+cl.icon+'</div><div class="recent-info"><div class="recent-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+'</div><div class="recent-meta">'+fmtDate(ev.date)+'</div></div><div class="recent-score '+scColor(ev.score)+'">'+ev.score.toFixed(0)+'%</div></div>'
+  }).join(''):'<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">Nenhuma avaliação ainda</div>'
+}
+
+/* ─── SETUP ─── */
 let setupStore=null;
+function backFromSetup(){
+  if(currentDashTypeId){goCLDashboard(currentDashTypeId)}else{goHome()}
+}
 function startSetup(typeId){
   const cl=checklists.find(c=>c.id===typeId);if(!cl)return;
   currentEval={typeId,store:null,person:'',notes:'',answers:{}};setupStore=null;
   document.getElementById('setup-title').textContent=cl.name;
   document.getElementById('setup-person').value='';
   document.getElementById('setup-notes').value='';
+  const sess=getSession();
+  const userStore=sess&&sess.store?sess.store:null;
+  
   const sg=document.getElementById('setup-store-grid');
-  sg.innerHTML=STORES.map(s=>'<button class="store-btn" onclick="selectStore(\''+s+'\',this)">'+esc(s)+'</button>').join('');
+  sg.innerHTML=STORES.map(s=>{
+    const locked=userStore&&s!==userStore;
+    return'<button class="store-btn'+(userStore===s?' selected':'')+'" onclick="selectStore(\''+s.replace(/'/g,"\\'")+ '\',this)"'+(locked?' disabled':'')+'>'+esc(s)+'</button>'
+  }).join('');
+  if(userStore){setupStore=userStore;currentEval.store=userStore}
   document.getElementById('setup-person-sec').style.display=cl.hasPerson?'block':'none';
-  document.getElementById('btn-start').disabled=true;
-  showScreen('s-setup');
+  checkSetupReady();
+  showScreen('s-setup')
 }
 function selectStore(store,btn){
   setupStore=store;
@@ -344,6 +896,7 @@ function startChecklist(){
   currentEval.notes=document.getElementById('setup-notes').value.trim();
   renderChecklist();showScreen('s-checklist')
 }
+/* CHECKLIST */
 function getAllQ(){const cl=checklists.find(c=>c.id===currentEval.typeId);if(!cl)return[];return cl.areas.flatMap(a=>a.questions.map(q=>({...q,areaName:a.name})))}
 function renderChecklist(){
   const cl=checklists.find(c=>c.id===currentEval.typeId);
@@ -354,7 +907,7 @@ function renderChecklist(){
   updateProgress();
   let html='',lastArea='';
   allQ.forEach((q,i)=>{
-    if(q.areaName!==lastArea){html+='<div class="area-header">📌 '+esc(q.areaName)+'</div>';lastArea=q.areaName}
+    if(q.areaName!==lastArea){html+='<div class="area-header">\u{1f4cc} '+esc(q.areaName)+'</div>';lastArea=q.areaName}
     const ans=currentEval.answers[q.id];
     const sc=ans!==undefined?'s'+ans.score:'';
     html+='<div class="q-card '+sc+'" id="qc-'+q.id+'">'+
@@ -387,7 +940,8 @@ function updateFinishBtn(){
   const ans=allQ.filter(q=>currentEval.answers[q.id]!==undefined&&currentEval.answers[q.id].score!==null).length;
   document.getElementById('btn-finish').disabled=ans<allQ.length
 }
-function confirmAbort(){if(Object.keys(currentEval.answers).length>0){if(!confirm('Abandonar a avaliação?'))return}goHome()}
+function confirmAbort(){if(Object.keys(currentEval.answers).length>0){if(!confirm('Abandonar a avaliação?'))return}backFromSetup()}
+/* CALC + RESULT */
 function calcScore(){
   const cl=checklists.find(c=>c.id===currentEval.typeId);
   const areaScores=cl.areas.map(area=>{
@@ -403,18 +957,24 @@ function finishChecklist(){
   const sd=calcScore();
   const id=Date.now();
   const ev={id,typeId:currentEval.typeId,store:currentEval.store,person:currentEval.person,date:new Date().toISOString().split('T')[0],score:sd.pct,areaScores:sd.areaScores,answers:currentEval.answers,notes:currentEval.notes,conclusion:''};
-  evaluations.push(ev);saveEV();viewingEval=ev;renderResult(ev);showScreen('s-result')
+  evaluations.push(ev);saveEV();
+  prevScreen='s-cl-dashboard';
+  viewingEval=ev;renderResult(ev);showScreen('s-result')
 }
-function viewEval(id){const ev=evaluations.find(e=>e.id===id);if(!ev)return;viewingEval=ev;renderResult(ev);showScreen('s-result')}
+function viewEval(id,from){
+  prevScreen=from||'s-home';
+  const ev=evaluations.find(e=>e.id===id);if(!ev)return;
+  viewingEval=ev;renderResult(ev);showScreen('s-result')
+}
 function renderResult(ev){
   const cl=checklists.find(c=>c.id===ev.typeId);const sc=ev.score;
   const ring=document.getElementById('result-ring');
   ring.style.borderColor=sc>=80?'rgba(39,174,96,.6)':sc>=60?'rgba(243,156,18,.6)':'rgba(231,76,60,.6)';
   document.getElementById('result-score').textContent=sc.toFixed(1)+'%';
-  document.getElementById('result-store-label').textContent=(cl?cl.icon:'📋')+' '+ev.store+(ev.person?' — '+ev.person:'');
+  document.getElementById('result-store-label').textContent=(cl?cl.icon:'\u{1f4cb}')+' '+ev.store+(ev.person?' — '+ev.person:'');
   document.getElementById('result-date-label').textContent=fmtDate(ev.date);
   document.getElementById('result-areas').innerHTML=(ev.areaScores||[]).map(a=>{const p=a.pct||0;const col=p>=80?'var(--green)':p>=60?'var(--yellow)':'var(--red)';return'<div class="area-result"><div class="area-result-name">'+esc(a.areaName)+'</div><div class="area-bar-wrap"><div class="area-bar"><div class="area-bar-fill" style="width:'+p+'%;background:'+col+'"></div></div><div class="area-score-label" style="color:'+col+'">'+p.toFixed(0)+'%</div></div></div>'}).join('');
-  const allQ=cl?cl.areas.flatMap(a=>a.questions.map(q=>({...q,areaName:a.name}))):[]; 
+  const allQ=cl?cl.areas.flatMap(a=>a.questions.map(q=>({...q,areaName:a.name}))):[];
   const low=allQ.filter(q=>{const a=ev.answers?ev.answers[q.id]:null;return a&&a.score!==null&&a.score<3});
   const brl=document.getElementById('result-breakdown-list');
   if(!low.length){brl.innerHTML='<div style="font-size:13px;color:var(--green)">✅ Todos os itens com pontuação satisfatória!</div>'}
@@ -422,9 +982,13 @@ function renderResult(ev){
   const ni=document.getElementById('result-notes-input');
   ni.value=ev.conclusion||'';ni.onchange=()=>{ev.conclusion=ni.value;saveEV()}
 }
+/* HISTORY */
 function renderHistory(){
   const f=document.getElementById('hist-filters');
-  const types=[...new Set(evaluations.map(e=>e.typeId))];
+  const sess=getSession();
+  let allEvs=[...evaluations];
+  if(sess&&sess.store)allEvs=allEvs.filter(e=>e.store===sess.store);
+  const types=[...new Set(allEvs.map(e=>e.typeId))];
   f.innerHTML='<button class="filter-chip '+(histFilter==='all'?'active':'')+'" onclick="setHistFilter(\'all\',this)">Todos</button>'+
     types.map(tid=>{const cl=checklists.find(c=>c.id===tid);return'<button class="filter-chip '+(histFilter===tid?'active':'')+'" onclick="setHistFilter(\''+tid+'\',this)">'+(cl?cl.icon+' '+esc(cl.name):tid)+'</button>'}).join('');
   renderHistBody()
@@ -432,12 +996,17 @@ function renderHistory(){
 function setHistFilter(f,btn){histFilter=f;document.querySelectorAll('.filter-chip').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderHistBody()}
 function renderHistBody(){
   const body=document.getElementById('hist-body');
+  const sess=getSession();
   let evs=[...evaluations].sort((a,b)=>b.id-a.id);
+  if(sess&&sess.store)evs=evs.filter(e=>e.store===sess.store);
   if(histFilter!=='all')evs=evs.filter(e=>e.typeId===histFilter);
-  if(!evs.length){body.innerHTML='<div class="hist-empty"><div class="hist-empty-icon">📋</div><div>Nenhuma avaliação encontrada</div></div>';return}
-  body.innerHTML=evs.map(ev=>{const cl=checklists.find(c=>c.id===ev.typeId);const sc=ev.score;const cls=sc>=80?'score-green':sc>=60?'score-yellow':'score-red';return'<div class="hist-item" onclick="viewEval('+ev.id+')">'+'<div class="hist-icon">'+(cl?cl.icon:'📋')+'</div><div class="hist-info"><div class="hist-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+'</div><div class="hist-meta">'+(cl?esc(cl.name):'?')+' · '+fmtDate(ev.date)+'</div></div><div class="hist-score '+cls+'">'+sc.toFixed(0)+'%</div></div>'}).join('')
+  if(!evs.length){body.innerHTML='<div class="hist-empty"><div class="hist-empty-icon">\u{1f4cb}</div><div>Nenhuma avaliação encontrada</div></div>';return}
+  body.innerHTML=evs.map(ev=>{const cl=checklists.find(c=>c.id===ev.typeId);const sc=ev.score;return'<div class="hist-item" onclick="viewEval('+ev.id+',\'s-history\')">'+'<div class="hist-icon">'+(cl?cl.icon:'\u{1f4cb}')+'</div><div class="hist-info"><div class="hist-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+'</div><div class="hist-meta">'+(cl?esc(cl.name):'?')+' · '+fmtDate(ev.date)+'</div></div><div class="hist-score '+scColor(sc)+'">'+sc.toFixed(0)+'%</div></div>'}).join('')
 }
+/* ADMIN */
 function renderAdmin(){
+  const uCount=users.length;
+  document.getElementById('admin-users-meta').textContent=uCount+' usuário(s) cadastrado(s)';
   document.getElementById('admin-cl-list').innerHTML=checklists.map(cl=>{const tot=cl.areas.reduce((s,a)=>s+a.questions.length,0);return'<div class="admin-card" onclick="editChecklistType(\''+cl.id+'\')">'+'<div class="admin-card-icon">'+cl.icon+'</div><div class="admin-card-info"><div class="admin-card-name">'+esc(cl.name)+'</div><div class="admin-card-meta">'+cl.areas.length+' área(s) · '+tot+' perguntas</div></div><div class="admin-card-arrow">›</div></div>'}).join('')
 }
 function editChecklistType(id){
@@ -461,14 +1030,54 @@ function saveChecklistType(){
   if(idx>=0){checklists[idx]=editingCl;saveCL()}
   editingCl=null;showToast('✅ Checklist salvo!');backFromAdminType()
 }
-function changePassword(){const np=document.getElementById('admin-new-pass').value;if(np.length<4){showToast('Senha muito curta (mín. 4 caracteres)');return}setPass(np);document.getElementById('admin-new-pass').value='';showToast('✅ Senha alterada!')}
-function resetData(){if(!confirm('Apagar TODAS as avaliações? Ação irreversível.'))return;evaluations=[];saveEV();showToast('🗑 Dados apagados.')}
+function changeMyPassword(){
+  const np=document.getElementById('admin-new-pass').value;
+  if(np.length<4){showToast('Senha muito curta (mín. 4 caracteres)');return}
+  const sess=getSession();
+  const u=users.find(u=>u.id===sess.id);
+  if(u){u.pass=np;saveUsers()}
+  document.getElementById('admin-new-pass').value='';
+  showToast('✅ Senha alterada!')
+}
+function resetData(){if(!confirm('Apagar TODAS as avaliações? Ação irreversível.'))return;evaluations=[];saveEV();showToast('\u{1f5d1} Dados apagados.')}
+/* USERS ADMIN */
+function renderAdminUsers(){
+  const sel=document.getElementById('nu-store');
+  if(sel.options.length<=1){STORES.forEach(s=>{const o=document.createElement('option');o.value=s;o.textContent=s;sel.appendChild(o)})}
+  document.getElementById('users-list').innerHTML=users.map(u=>'<div class="user-card"><div class="user-card-icon">'+(u.role==='master'?'\u{1f451}':'\u{1f464}')+'</div><div class="user-card-info"><div class="user-card-name">'+esc(u.name)+'</div><div class="user-card-meta">@'+esc(u.username)+' · '+(u.store?esc(u.store):'Todas as lojas')+(u.role==='master'?' · Master':'')+'</div></div>'+(u.id!=='u0'?'<button class="user-card-del" onclick="deleteUser(\''+u.id+'\')" title="Excluir">✕</button>':'')+'</div>').join('')
+}
+function saveNewUser(){
+  const name=document.getElementById('nu-name').value.trim();
+  const username=document.getElementById('nu-user').value.trim().toLowerCase();
+  const pass=document.getElementById('nu-pass').value;
+  const store=document.getElementById('nu-store').value||null;
+  const role=document.getElementById('nu-role').value;
+  if(!name){showToast('Informe o nome.');return}
+  if(!username){showToast('Informe o login.');return}
+  if(pass.length<4){showToast('Senha mínima: 4 caracteres.');return}
+  if(users.find(u=>u.username.toLowerCase()===username)){showToast('Login já existe.');return}
+  const newUser={id:'u'+Date.now(),name,username,pass,store,role};
+  users.push(newUser);saveUsers();
+  document.getElementById('nu-name').value='';
+  document.getElementById('nu-user').value='';
+  document.getElementById('nu-pass').value='';
+  document.getElementById('nu-store').value='';
+  document.getElementById('nu-role').value='user';
+  renderAdminUsers();
+  showToast('✅ Usuário criado!')
+}
+function deleteUser(id){
+  if(!confirm('Excluir este usuário?'))return;
+  users=users.filter(u=>u.id!==id);saveUsers();
+  renderAdminUsers();showToast('Usuário excluído.')
+}
+/* SHARE / EXPORT */
 function shareResult(){
   const ev=viewingEval;if(!ev)return;
   const cl=checklists.find(c=>c.id===ev.typeId);
   const text='Checklist Casa China\n'+(cl?cl.name:'')+'\nLoja: '+ev.store+(ev.person?' | '+ev.person:'')+'\nData: '+fmtDate(ev.date)+'\nNota: '+ev.score.toFixed(1)+'%';
   if(navigator.share){navigator.share({title:'Checklist Casa China',text})}
-  else{navigator.clipboard&&navigator.clipboard.writeText(text).then(()=>showToast('📋 Copiado!'))}
+  else{navigator.clipboard&&navigator.clipboard.writeText(text).then(()=>showToast('\u{1f4cb} Copiado!'))}
 }
 function exportPDF(){
   if(typeof window.jspdf==='undefined'){showToast('Biblioteca PDF não carregada.');return}
@@ -484,25 +1093,38 @@ function exportPDF(){
   let y=56;
   (ev.areaScores||[]).forEach(a=>{doc.setFontSize(9);doc.setFont(undefined,'bold');doc.setTextColor(40,40,40);doc.text(a.areaName+': '+a.pct.toFixed(1)+'%',14,y);y+=5});
   y+=2;
-  const allQ=cl?cl.areas.flatMap(area=>area.questions.map(q=>({...q,areaName:area.name}))):[]; 
+  const allQ=cl?cl.areas.flatMap(area=>area.questions.map(q=>({...q,areaName:area.name}))):[];
   const rows=allQ.map(q=>{const a=ev.answers?ev.answers[q.id]:null;const sc=a&&a.score!==null?a.score:'-';return[q.areaName,q.text,String(q.weight),String(sc),a&&a.comment?a.comment:'']});
-  doc.autoTable({startY:y,head:[['Área','Pergunta','Peso','Nota','Observação']],body:rows,styles:{fontSize:7,cellPadding:2},headStyles:{fillColor:[192,57,43],textColor:255},columnStyles:{0:{cellWidth:28},1:{cellWidth:80},2:{cellWidth:10},3:{cellWidth:10},4:{cellWidth:42}},margin:{left:14,right:14},didParseCell(data){if(data.section==='body'&&data.column.index===3){const v=parseInt(data.cell.raw);if(!isNaN(v))data.cell.styles.textColor=v<=1?[231,76,60]:v<=3?[243,156,18]:[39,174,96]}}});
-  if(ev.conclusion){const fy=doc.lastAutoTable.finalY+6;doc.setFontSize(9);doc.setFont(undefined,'bold');doc.setTextColor(40,40,40);doc.text('Conclusão:',14,fy);doc.setFont(undefined,'normal');const lines=doc.splitTextToSize(ev.conclusion,180);doc.text(lines,14,fy+5)}
-  doc.save('checklist_'+ev.store.replace(/\s+/g,'_')+'_'+ev.date+'.pdf');showToast('📄 PDF gerado!')
+  doc.autoTable({startY:y,head:[['Area','Pergunta','Peso','Nota','Observacao']],body:rows,styles:{fontSize:7,cellPadding:2},headStyles:{fillColor:[192,57,43],textColor:255},columnStyles:{0:{cellWidth:28},1:{cellWidth:80},2:{cellWidth:10},3:{cellWidth:10},4:{cellWidth:42}},margin:{left:14,right:14},didParseCell(data){if(data.section==='body'&&data.column.index===3){const v=parseInt(data.cell.raw);if(!isNaN(v))data.cell.styles.textColor=v<=1?[231,76,60]:v<=3?[243,156,18]:[39,174,96]}}});
+  if(ev.conclusion){const fy=doc.lastAutoTable.finalY+6;doc.setFontSize(9);doc.setFont(undefined,'bold');doc.setTextColor(40,40,40);doc.text('Conclusao:',14,fy);doc.setFont(undefined,'normal');const lines=doc.splitTextToSize(ev.conclusion,180);doc.text(lines,14,fy+5)}
+  doc.save('checklist_'+ev.store.replace(/\s+/g,'_')+'_'+ev.date+'.pdf');showToast('\u{1f4c4} PDF gerado!')
 }
 function exportExcel(){
   if(typeof XLSX==='undefined'){showToast('Biblioteca Excel não carregada.');return}
   const ev=viewingEval;const cl=checklists.find(c=>c.id===ev.typeId);
-  const allQ=cl?cl.areas.flatMap(a=>a.questions.map(q=>({...q,areaName:a.name}))):[]; 
+  const allQ=cl?cl.areas.flatMap(a=>a.questions.map(q=>({...q,areaName:a.name}))):[];
   const rows=[['Checklist Casa China — Relatório de Avaliação'],['Checklist:',cl?cl.name:''],['Loja:',ev.store]];
   if(ev.person)rows.push(['Colaborador:',ev.person]);
-  rows.push(['Data:',fmtDate(ev.date)],['Nota Final:',ev.score.toFixed(1)+'%'],[],['Área','Pergunta','Peso','Nota (0-5)','% Questão','Observação'],...allQ.map(q=>{const a=ev.answers?ev.answers[q.id]:null;const sc=a&&a.score!==null?a.score:0;const pct=(sc/5*100).toFixed(1)+'%';return[q.areaName,q.text,q.weight,sc,pct,a&&a.comment?a.comment:'']}),[]  ,['Resumo por Área'],['Área','Pontos','Máximo','%'],...(ev.areaScores||[]).map(a=>[a.areaName,a.total,a.max,a.pct.toFixed(1)+'%']),[]  ,['Conclusão:',ev.conclusion||'']);
+  rows.push(['Data:',fmtDate(ev.date)],['Nota Final:',ev.score.toFixed(1)+'%'],[],
+    ['Área','Pergunta','Peso','Nota (0-5)','% Questão','Observação'],
+    ...allQ.map(q=>{const a=ev.answers?ev.answers[q.id]:null;const sc=a&&a.score!==null?a.score:0;const pct=(sc/5*100).toFixed(1)+'%';return[q.areaName,q.text,q.weight,sc,pct,a&&a.comment?a.comment:'']}),
+    [],['Resumo por Área'],['Área','Pontos','Máximo','%'],
+    ...(ev.areaScores||[]).map(a=>[a.areaName,a.total,a.max,a.pct.toFixed(1)+'%']),
+    [],['Conclusão:',ev.conclusion||'']);
   const ws=XLSX.utils.aoa_to_sheet(rows);
   ws['!cols']=[{wch:28},{wch:60},{wch:8},{wch:12},{wch:12},{wch:30}];
   const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Avaliação');
-  XLSX.writeFile(wb,'checklist_'+ev.store.replace(/\s+/g,'_')+'_'+ev.date+'.xlsx');showToast('📊 Excel gerado!')
+  XLSX.writeFile(wb,'checklist_'+ev.store.replace(/\s+/g,'_')+'_'+ev.date+'.xlsx');showToast('\u{1f4ca} Excel gerado!')
 }
-loadData(); goHome();
+/* INIT */
+function init(){
+  loadUsers();
+  loadData();
+  const sess=getSession();
+  if(sess){goHome()}
+  else{showScreen('s-login')}
+}
+init();
 </script>
 </body>
 </html>
