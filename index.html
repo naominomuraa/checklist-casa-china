@@ -298,7 +298,7 @@ function goHistory(){renderHistory();showScreen('s-history');setNav('nav-hist')}
 function goAdmin(){renderAdmin();showScreen('s-admin');setNav('nav-admin')}
 function backFromAdminType(){editingCl=null;goAdmin()}
 function doLogin(){const u=document.getElementById('li-user').value.trim().toLowerCase();const p=document.getElementById('li-pass').value;if((u==='master'||u==='admin')&&p===getPass()){localStorage.setItem('cc2_sess','1');goHome()}else{document.getElementById('li-err').textContent='Usuário ou senha incorretos.'}}
-document.getElementById('li-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
+document.getElementById('li-pass')?.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
 function fmtDate(d){if(!d)return'';const[y,m,day]=d.split('-');return day+'/'+m+'/'+y}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
