@@ -884,7 +884,7 @@ function startSetup(typeId){
   sg.innerHTML=STORES.map(s=>{
     const locked=userStores.length>0&&!userStores.includes(s);
     const pre=userStores.length===1&&s===userStores[0];
-    return'<button class="store-btn'+(pre?' selected':'')+' onclick="selectStore(\''+s.replace(/'/g,"\\'")+'\',this)"'+(locked?' disabled':'')+'>'+esc(s)+'</button>'
+    return'<button class="store-btn'+(pre?' selected':'')+'" onclick="selectStore(\''+s.replace(/'/g,"\\'")+'\',this)"'+(locked?' disabled':'')+'>'+esc(s)+'</button>'
   }).join('');
   if(userStores.length===1){setupStore=userStores[0];currentEval.store=userStores[0]}
   document.getElementById('setup-person-sec').style.display=cl.hasPerson?'block':'none';
@@ -1125,7 +1125,18 @@ async function exportPDF(){
   const rows=allQ.map(q=>{const a=ev.answers?ev.answers[q.id]:null;const sc=a&&a.score!==null?a.score:'-';return[q.areaName,q.text,String(q.weight),String(sc),a&&a.comment?a.comment:'']});
   doc.autoTable({startY:y,head:[['Area','Pergunta','Peso','Nota','Observacao']],body:rows,styles:{fontSize:7,cellPadding:2},headStyles:{fillColor:[192,57,43],textColor:255},columnStyles:{0:{cellWidth:28},1:{cellWidth:80},2:{cellWidth:10},3:{cellWidth:10},4:{cellWidth:42}},margin:{left:14,right:14},didParseCell(data){if(data.section==='body'&&data.column.index===3){const v=parseInt(data.cell.raw);if(!isNaN(v))data.cell.styles.textColor=v<=1?[231,76,60]:v<=3?[243,156,18]:[39,174,96]}}});
   if(ev.conclusion){const fy=doc.lastAutoTable.finalY+6;doc.setFontSize(9);doc.setFont(undefined,'bold');doc.setTextColor(40,40,40);doc.text('Conclusao:',14,fy);doc.setFont(undefined,'normal');const lines=doc.splitTextToSize(ev.conclusion,180);doc.text(lines,14,fy+5)}
-  doc.save('checklist_'+ev.store.replace(/\s+/g,'_')+'_'+ev.date+'.pdf');showToast('\u{1f4c4} PDF gerado!')
+  try{
+    const blob=doc.output('blob');
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download='checklist_'+ev.store.replace(/\s+/g,'_')+'_'+ev.date+'.pdf';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+    showToast('📄 PDF gerado!');
+  }catch(e){
+    doc.save('checklist_'+ev.store.replace(/\s+/g,'_')+'_'+ev.date+'.pdf');
+    showToast('📄 PDF gerado!');
+  }
 }
 function exportExcel(){
   if(typeof XLSX==='undefined'){showToast('Biblioteca Excel não carregada.');return}
