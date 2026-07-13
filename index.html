@@ -496,7 +496,7 @@ function exportExcel(){
   const allQ=cl?cl.areas.flatMap(a=>a.questions.map(q=>({...q,areaName:a.name}))):[]; 
   const rows=[['Checklist Casa China — Relatório de Avaliação'],['Checklist:',cl?cl.name:''],['Loja:',ev.store]];
   if(ev.person)rows.push(['Colaborador:',ev.person]);
-  rows.push(['Data:',fmtDate(ev.date)],['Nota Final:',ev.score.toFixed(1)+'%'],[],['Área','Pergunta','Peso','Nota (0-5)','% Questão','Observação'],...allQ.map(q=>{const a=ev.answers?ev.answers[q.id]:null;const sc=a&&a.score!==null?a.score:0;const pct=(sc/5*100).toFixed(1)+'%';return[q.areaName,q.text,q.weight,sc,pct,a&&a.comment?a.comment:'']}),[]  ,['Resumo por Área'],['Área','Pontos','Máximo','%'],...(ev.areaScores||[]).map(a=>[a.areaName,a.total,a.max,a.pct.toFixed(1)+'%']),[]  ,['Conclusão:',ev.conclusion||'']]);
+  rows.push(['Data:',fmtDate(ev.date)],['Nota Final:',ev.score.toFixed(1)+'%'],[],['Área','Pergunta','Peso','Nota (0-5)','% Questão','Observação'],...allQ.map(q=>{const a=ev.answers?ev.answers[q.id]:null;const sc=a&&a.score!==null?a.score:0;const pct=(sc/5*100).toFixed(1)+'%';return[q.areaName,q.text,q.weight,sc,pct,a&&a.comment?a.comment:'']}),[]  ,['Resumo por Área'],['Área','Pontos','Máximo','%'],...(ev.areaScores||[]).map(a=>[a.areaName,a.total,a.max,a.pct.toFixed(1)+'%']),[]  ,['Conclusão:',ev.conclusion||'']);
   const ws=XLSX.utils.aoa_to_sheet(rows);
   ws['!cols']=[{wch:28},{wch:60},{wch:8},{wch:12},{wch:12},{wch:30}];
   const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Avaliação');
@@ -505,4 +505,4 @@ function exportExcel(){
 loadData(); goHome();
 </script>
 </body>
-</html
+</html>
