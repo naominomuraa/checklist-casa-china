@@ -842,6 +842,8 @@ function renderHome(){
 
 /* ─── DASHBOARD ─── */
 function goCLDashboard(typeId){
+  const _dsess=getSession();
+  if(_dsess&&_dsess.role!=='master'&&_dsess.checklists&&_dsess.checklists.length&&!_dsess.checklists.includes(typeId)){showToast('❌ Sem acesso a este tipo de checklist');return;}
   currentDashTypeId=typeId;
   renderCLDashboard(typeId);
   showScreen('s-cl-dashboard')
@@ -1057,6 +1059,7 @@ function renderHistBody(){
   const body=document.getElementById('hist-body');
   const sess=getSession();
   let evs=[...evaluations].sort((a,b)=>b.id-a.id);
+  if(sess&&sess.role!=='master')evs=evs.filter(e=>e.userId===sess.id);
   const _sth=(sess&&sess.stores)||[];if(_sth.length)evs=evs.filter(e=>_sth.includes(e.store));
   if(histFilter!=='all')evs=evs.filter(e=>e.typeId===histFilter);
   if(!evs.length){body.innerHTML='<div class="hist-empty"><div class="hist-empty-icon">\u{1f4cb}</div><div>Nenhuma avaliação encontrada</div></div>';return}
