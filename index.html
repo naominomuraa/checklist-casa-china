@@ -198,6 +198,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .nu-input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;outline:none;font-family:inherit;background:#fff;color:var(--text)}
 .nu-input:focus{border-color:var(--primary)}
 .btn-save-user{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:700;cursor:pointer;width:100%}
+
+.edit-user-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:999;align-items:flex-end;justify-content:center}
+.edit-user-sheet{background:var(--card);border-radius:16px 16px 0 0;padding:20px 16px 32px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto}
+.edit-user-sheet h3{font-size:15px;font-weight:800;margin-bottom:14px;color:var(--text)}
+.eu-subtitle{font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.user-card-edit{cursor:pointer;transition:background .15s}
+.user-card-edit:active{background:#f0f0f0}
 /* Photos */
 .q-photos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .q-photo-thumb{width:64px;height:64px;object-fit:cover;border-radius:8px;border:2px solid var(--border);cursor:pointer}
@@ -363,6 +370,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="hist-body" id="hist-body"></div>
 </div>
 
+<!-- EDIT USER MODAL -->
+<div class="edit-user-modal" id="edit-user-modal">
+  <div class="edit-user-sheet">
+    <h3 id="eu-name">Editar Usuário</h3>
+    <div class="eu-subtitle">Nova senha <small style="font-weight:400;text-transform:none">(vazio = manter atual)</small></div>
+    <input class="nu-input" type="password" id="eu-pass" placeholder="Nova senha (opcional)" autocomplete="new-password" style="margin-bottom:12px">
+    <div class="eu-subtitle">Lojas com acesso <small style="font-weight:400;text-transform:none">(desmarcado = todas)</small></div>
+    <div class="nu-stores-grid" id="eu-stores-grid" style="margin-bottom:12px"></div>
+    <div class="eu-subtitle">Checklists com acesso <small style="font-weight:400;text-transform:none">(desmarcado = todos)</small></div>
+    <div class="nu-stores-grid" id="eu-cl-grid" style="margin-bottom:16px"></div>
+    <button class="btn-save-user" onclick="saveEditUser()" style="margin-bottom:8px">Salvar alterações</button>
+    <button onclick="closeEditUser()" style="width:100%;background:none;border:none;padding:10px;font-size:14px;color:var(--muted);cursor:pointer">Cancelar</button>
+  </div>
+</div>
+
 <!-- ADMIN -->
 <div class="screen" id="s-admin">
   <div class="header"><button class="header-back" onclick="goHome()">←</button><h1>Administração</h1></div>
@@ -435,6 +457,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
           <span class="nu-form-label">Lojas com acesso</span>
           <div class="nu-stores-grid" id="nu-stores-grid"></div>
           <small style="color:var(--muted)">Deixe tudo desmarcado = todas as lojas</small>
+        </div>
+        <div>
+          <span class="nu-form-label">Checklists com acesso</span>
+          <div class="nu-stores-grid" id="nu-cl-grid"></div>
+          <small style="color:var(--muted)">Deixe tudo desmarcado = todos os tipos</small>
         </div>
         <div>
           <span class="nu-form-label">Perfil</span>
@@ -801,9 +828,11 @@ function renderHome(){
   document.getElementById('home-user').textContent='👤 '+(sess?sess.name:'Master');
   document.getElementById('nav-admin').style.display=isMaster()?'flex':'none';
   const grid=document.getElementById('cl-grid');
-  grid.innerHTML=checklists.map(cl=>{const tot=cl.areas.reduce((s,a)=>s+a.questions.length,0);return'<div class="cl-card" onclick="goCLDashboard(\''+cl.id+'\')"><div class="cl-icon">'+cl.icon+'</div><div class="cl-name">'+esc(cl.name)+'</div><div class="cl-count">'+tot+' perguntas · '+cl.areas.length+' área(s)</div></div>'}).join('');
+  const allowedCLs=(sess&&sess.role!=='master'&&sess.checklists&&sess.checklists.length)?checklists.filter(cl=>sess.checklists.includes(cl.id)):checklists;
+  grid.innerHTML=allowedCLs.map(cl=>{const tot=cl.areas.reduce((s,a)=>s+a.questions.length,0);return'<div class="cl-card" onclick="goCLDashboard(\''+cl.id+'\')">'<div class="cl-icon">'+cl.icon+'</div><div class="cl-name">'+esc(cl.name)+'</div><div class="cl-count">'+tot+' perguntas · '+cl.areas.length+' área(s)</div></div>'}).join('');
   const sess2=getSession();
   let evs=[...evaluations];
+  if(sess2&&sess2.role!=='master')evs=evs.filter(e=>e.userId===sess2.id);
   const _st2=(sess2&&sess2.stores)||[];if(_st2.length)evs=evs.filter(e=>_st2.includes(e.store));
   const recent=evs.sort((a,b)=>b.id-a.id).slice(0,5);
   const rl=document.getElementById('recent-list');
@@ -822,6 +851,7 @@ function renderCLDashboard(typeId){
   if(!cl)return;
   const sess=getSession();
   let evs=evaluations.filter(e=>e.typeId===typeId);
+  if(sess&&sess.role!=='master')evs=evs.filter(e=>e.userId===sess.id);
   const _stf=(sess&&sess.stores)||[];if(_stf.length)evs=evs.filter(e=>_stf.includes(e.store));
 
   document.getElementById('dash-cl-name').textContent=cl.name;
@@ -975,7 +1005,7 @@ function calcScore(){
 function finishChecklist(){
   const sd=calcScore();
   const id=Date.now();
-  const ev={id,typeId:currentEval.typeId,store:currentEval.store,person:currentEval.person,date:new Date().toISOString().split('T')[0],score:sd.pct,areaScores:sd.areaScores,answers:currentEval.answers,notes:currentEval.notes,conclusion:''};
+  const ev={id,typeId:currentEval.typeId,store:currentEval.store,person:currentEval.person,date:new Date().toISOString().split('T')[0],score:sd.pct,areaScores:sd.areaScores,answers:currentEval.answers,notes:currentEval.notes,conclusion:'',userId:(getSession()||{}).id};
   if(editingEvalId){
     const _ei=evaluations.findIndex(e=>e.id===editingEvalId);
     if(_ei>=0){ev.id=editingEvalId;evaluations[_ei]=ev}else{evaluations.push(ev)}
@@ -1015,6 +1045,7 @@ function renderHistory(){
   const f=document.getElementById('hist-filters');
   const sess=getSession();
   let allEvs=[...evaluations];
+  if(sess&&sess.role!=='master')allEvs=allEvs.filter(e=>e.userId===sess.id);
   const _sth2=(sess&&sess.stores)||[];if(_sth2.length)allEvs=allEvs.filter(e=>_sth2.includes(e.store));
   const types=[...new Set(allEvs.map(e=>e.typeId))];
   f.innerHTML='<button class="filter-chip '+(histFilter==='all'?'active':'')+'" onclick="setHistFilter(\'all\',this)">Todos</button>'+
@@ -1032,6 +1063,31 @@ function renderHistBody(){
   body.innerHTML=evs.map(ev=>{const cl=checklists.find(c=>c.id===ev.typeId);const sc=ev.score;return'<div class="hist-item" onclick="viewEval('+ev.id+',\'s-history\')">'+'<div class="hist-icon">'+(cl?cl.icon:'\u{1f4cb}')+'</div><div class="hist-info"><div class="hist-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+'</div><div class="hist-meta">'+(cl?esc(cl.name):'?')+' · '+fmtDate(ev.date)+'</div></div><div class="hist-score '+scColor(sc)+'">'+sc.toFixed(0)+'%</div></div>'}).join('')
 }
 /* ADMIN */
+
+function openEditUser(id){
+  const u=users.find(x=>x.id===id);if(!u)return;
+  document.getElementById('eu-name').textContent=u.name+' (@'+u.username+')';
+  document.getElementById('eu-pass').value='';
+  const sg=document.getElementById('eu-stores-grid');
+  if(!sg.children.length)sg.innerHTML=STORES.map(s=>'<button type="button" class="nu-store-btn" onclick="this.classList.toggle(\'on\')">'+ esc(s)+'</button>').join('');
+  sg.querySelectorAll('.nu-store-btn').forEach(b=>b.classList.toggle('on',(u.stores||[]).includes(b.textContent)));
+  const cg=document.getElementById('eu-cl-grid');
+  if(!cg.children.length)cg.innerHTML=checklists.map(cl=>'<button type="button" class="nu-store-btn" data-clid="'+cl.id+'" onclick="this.classList.toggle(\'on\')">'+esc(cl.name)+'</button>').join('');
+  cg.querySelectorAll('.nu-store-btn').forEach(b=>b.classList.toggle('on',(u.checklists||[]).includes(b.dataset.clid)));
+  document.getElementById('edit-user-modal').dataset.uid=id;
+  document.getElementById('edit-user-modal').style.display='flex';
+}
+function closeEditUser(){document.getElementById('edit-user-modal').style.display='none'}
+function saveEditUser(){
+  const id=document.getElementById('edit-user-modal').dataset.uid;
+  const u=users.find(x=>x.id===id);if(!u)return;
+  u.stores=[...document.querySelectorAll('#eu-stores-grid .nu-store-btn.on')].map(b=>b.textContent);
+  u.checklists=[...document.querySelectorAll('#eu-cl-grid .nu-store-btn.on')].map(b=>b.dataset.clid);
+  const np=document.getElementById('eu-pass').value;
+  if(np&&np.length>=4)u.pass=np;
+  saveUsers();closeEditUser();renderAdminUsers();
+  showToast('✅ Usuário atualizado!');
+}
 function renderAdmin(){
   const uCount=users.length;
   document.getElementById('admin-users-meta').textContent=uCount+' usuário(s) cadastrado(s)';
@@ -1072,12 +1128,16 @@ function resetData(){if(!confirm('Apagar TODAS as avaliações? Ação irrevers�
 function renderAdminUsers(){
   const grid=document.getElementById('nu-stores-grid');
   if(grid&&!grid.children.length){grid.innerHTML=STORES.map(s=>'<button type="button" class="nu-store-btn" onclick="this.classList.toggle(\'on\')">'+ esc(s)+'</button>').join('')}
+  const clgrid=document.getElementById('nu-cl-grid');
+  if(clgrid&&!clgrid.children.length){clgrid.innerHTML=checklists.map(cl=>'<button type="button" class="nu-store-btn" data-clid="'+cl.id+'" onclick="this.classList.toggle(\'on\')">'+esc(cl.name)+'</button>').join('')}
   document.getElementById('users-list').innerHTML=users.map(u=>{
     const sl=u.stores&&u.stores.length?u.stores.join(', '):'Todas as lojas';
-    return'<div class="user-card"><div class="user-card-icon">'+(u.role==='master'?'👑':'👤')+
+    const clNames=(u.checklists&&u.checklists.length)?u.checklists.map(id=>{const c=checklists.find(x=>x.id===id);return c?c.name:id}).join(', '):'Todos os tipos';
+    return'<div class="user-card'+(u.id!=='u0'?' user-card-edit':'')+'"+(u.id!=='u0'?' onclick="openEditUser(\''+u.id+'\')"':'')+'>'+
+    '<div class="user-card-icon">'+(u.role==='master'?'👑':'👤')+
     '</div><div class="user-card-info"><div class="user-card-name">'+esc(u.name)+'</div>'
-    +'<div class="user-card-meta">@'+esc(u.username)+' · '+esc(sl)+(u.role==='master'?' · Master':'')+'</div></div>'
-    +(u.id!=='u0'?'<button class="user-card-del" onclick="deleteUser(\''+u.id+'\')" title="Excluir">✕</button>':'')+'</div>';
+    +'<div class="user-card-meta">@'+esc(u.username)+' · '+esc(sl)+(u.role==='master'?' · Master':' · '+esc(clNames))+'</div></div>'
+    +(u.id!=='u0'?'<button class="user-card-del" onclick="event.stopPropagation();deleteUser(\''+u.id+'\')" title="Excluir">✕</button>':'')+'</div>';
   }).join('')
 }
 function saveNewUser(){
@@ -1085,12 +1145,13 @@ function saveNewUser(){
   const username=document.getElementById('nu-user').value.trim().toLowerCase();
   const pass=document.getElementById('nu-pass').value;
   const stores=[...document.querySelectorAll('#nu-stores-grid .nu-store-btn.on')].map(b=>b.textContent);
+  const clids=[...document.querySelectorAll('#nu-cl-grid .nu-store-btn.on')].map(b=>b.dataset.clid);
   const role=document.getElementById('nu-role').value;
   if(!name){showToast('Informe o nome.');return}
   if(!username){showToast('Informe o login.');return}
   if(pass.length<4){showToast('Senha mínima: 4 caracteres.');return}
   if(users.find(u=>u.username.toLowerCase()===username)){showToast('Login já existe.');return}
-  const newUser={id:'u'+Date.now(),name,username,pass,stores,role};
+  const newUser={id:'u'+Date.now(),name,username,pass,stores,checklists:clids,role};
   users.push(newUser);saveUsers();
   document.getElementById('nu-name').value='';
   document.getElementById('nu-user').value='';
