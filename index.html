@@ -1307,7 +1307,7 @@ function photoThumbsHTML(qid){
 }
 function addPhoto(qid){
   const inp=document.createElement('input');
-  inp.type='file';inp.accept='image/*';inp.capture='environment';
+  inp.type='file';inp.accept='image/*';
   inp.onchange=async()=>{
     const file=inp.files[0];if(!file)return;
     const dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsDataURL(file)});
