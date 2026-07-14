@@ -10,6 +10,8 @@
 <meta name="apple-mobile-web-app-title" content="Casa China">
 <link rel="apple-touch-icon" href="icon-192.png">
 <title>Checklist Casa China</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 <script async src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 :root{
@@ -808,21 +810,65 @@ let checklists=[],evaluations=[],users=[],currentEval=null,editingTypeId=null,ed
 let currentDashTypeId=null;
 let editingEvalId=null;
 
+/* ─── FIREBASE ─── */
+const firebaseConfig={apiKey:"AIzaSyDnNyiVMgSbtmFB48h1UxkbE-30pPsoYfQ",authDomain:"checklist-casa-china.firebaseapp.com",projectId:"checklist-casa-china",storageBucket:"checklist-casa-china.firebasestorage.app",messagingSenderId:"1062322213434",appId:"1:1062322213434:web:827944ba620b425f009b03"};
+firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+function _stripPhotos(ev){const e=JSON.parse(JSON.stringify(ev));if(e.answers)Object.keys(e.answers).forEach(k=>{if(e.answers[k]&&e.answers[k].photos)delete e.answers[k].photos});return e}
+
 /* ─── DATA ─── */
-function loadData(){
-  try{const c=localStorage.getItem('cc2_cl');checklists=c?JSON.parse(c):JSON.parse(JSON.stringify(DEFAULT_CL));const e=localStorage.getItem('cc2_ev');evaluations=e?JSON.parse(e):[]}
-  catch(x){checklists=JSON.parse(JSON.stringify(DEFAULT_CL));evaluations=[]}
+async function loadData(){
+  try{
+    const clDoc=await db.collection('appdata').doc('checklists').get();
+    if(clDoc.exists&&clDoc.data().data){checklists=clDoc.data().data}
+    else{checklists=JSON.parse(JSON.stringify(DEFAULT_CL));db.collection('appdata').doc('checklists').set({data:checklists})}
+    const evSnap=await db.collection('evaluations').get();
+    if(!evSnap.empty){evaluations=evSnap.docs.map(d=>d.data())}
+    else{
+      try{const localEv=localStorage.getItem('cc2_ev');if(localEv){evaluations=JSON.parse(localEv);const batch=db.batch();evaluations.forEach(ev=>batch.set(db.collection('evaluations').doc(String(ev.id)),_stripPhotos(ev)));batch.commit().catch(()=>{})}else{evaluations=[]}}catch(e){evaluations=[]}
+    }
+    db.collection('evaluations').onSnapshot(snap=>{
+      const active=document.querySelector('.screen.active');
+      if(active&&active.id!=='s-checklist'){
+        evaluations=snap.docs.map(d=>d.data());
+        if(active.id==='s-home')renderHome();
+        else if(active.id==='s-history')renderHistory();
+        else if(active.id==='s-cl-dashboard')goCLDashboard(currentDashTypeId);
+      }
+    });
+  }catch(x){
+    console.error('Firebase loadData:',x);
+    try{const c=localStorage.getItem('cc2_cl');checklists=c?JSON.parse(c):JSON.parse(JSON.stringify(DEFAULT_CL));const e=localStorage.getItem('cc2_ev');evaluations=e?JSON.parse(e):[]}
+    catch(e2){checklists=JSON.parse(JSON.stringify(DEFAULT_CL));evaluations=[]}
+  }
 }
-function saveCL(){localStorage.setItem('cc2_cl',JSON.stringify(checklists))}
-function saveEV(){localStorage.setItem('cc2_ev',JSON.stringify(evaluations))}
+function saveCL(){db.collection('appdata').doc('checklists').set({data:checklists}).catch(()=>localStorage.setItem('cc2_cl',JSON.stringify(checklists)))}
+function saveEV(){const batch=db.batch();evaluations.forEach(ev=>batch.set(db.collection('evaluations').doc(String(ev.id)),_stripPhotos(ev)));batch.commit().catch(()=>localStorage.setItem('cc2_ev',JSON.stringify(evaluations)))}
 
 /* ─── USERS ─── */
-function loadUsers(){
-  try{const u=localStorage.getItem('cc2_users');users=u?JSON.parse(u):JSON.parse(JSON.stringify(DEFAULT_USERS))}
-  catch(e){users=JSON.parse(JSON.stringify(DEFAULT_USERS))}
-  users=users.map(u=>{if(!u.stores)return Object.assign({},u,{stores:u.store?[u.store]:[]});return u});
+async function loadUsers(){
+  try{
+    const uDoc=await db.collection('appdata').doc('users').get();
+    if(uDoc.exists&&uDoc.data().data){users=uDoc.data().data}
+    else{
+      try{const localU=localStorage.getItem('cc2_users');users=localU?JSON.parse(localU):JSON.parse(JSON.stringify(DEFAULT_USERS))}
+      catch(e){users=JSON.parse(JSON.stringify(DEFAULT_USERS))}
+      db.collection('appdata').doc('users').set({data:users});
+    }
+    users=users.map(u=>{if(!u.stores)return Object.assign({},u,{stores:u.store?[u.store]:[]});return u});
+    db.collection('appdata').doc('users').onSnapshot(doc=>{
+      if(doc.exists&&doc.data().data){
+        users=doc.data().data.map(u=>{if(!u.stores)return Object.assign({},u,{stores:u.store?[u.store]:[]});return u});
+        const _rs=getSession();if(_rs){const _rl=users.find(u=>u.id===_rs.id);if(_rl)setSession(_rl);}
+      }
+    });
+  }catch(e){
+    try{const u=localStorage.getItem('cc2_users');users=u?JSON.parse(u):JSON.parse(JSON.stringify(DEFAULT_USERS))}
+    catch(e2){users=JSON.parse(JSON.stringify(DEFAULT_USERS))}
+    users=users.map(u=>{if(!u.stores)return Object.assign({},u,{stores:u.store?[u.store]:[]});return u});
+  }
 }
-function saveUsers(){localStorage.setItem('cc2_users',JSON.stringify(users))}
+function saveUsers(){db.collection('appdata').doc('users').set({data:users}).catch(()=>localStorage.setItem('cc2_users',JSON.stringify(users)))}
 function getSession(){try{return JSON.parse(localStorage.getItem('cc2_sess'))}catch(e){return null}}
 function setSession(u){localStorage.setItem('cc2_sess',JSON.stringify({id:u.id,name:u.name,stores:u.stores||[],role:u.role,checklists:u.checklists||[]}))}
 function isMaster(){const s=getSession();return s&&s.role==='master'}
@@ -1383,17 +1429,17 @@ function deleteCurrentEval(){
   const ev=viewingEval;if(!ev)return;
   if(!confirm('Excluir esta avaliação permanentemente?'))return;
   evaluations=evaluations.filter(e=>e.id!==ev.id);
-  saveEV();viewingEval=null;
+  db.collection('evaluations').doc(String(ev.id)).delete().catch(()=>{});viewingEval=null;
   showToast('🗑 Avaliação excluída.');
   goBack();
 }
 /* INIT */
-function init(){
-  loadUsers();
-  loadData();
-  const sess=getSession();
+async function init(){
   var _ll=document.getElementById('img-login-logo');if(_ll)_ll.src=LOGO_B64;
   var chin=document.getElementById('img-result-chin');if(chin)chin.src=CHIN_B64;
+  await loadUsers();
+  await loadData();
+  const sess=getSession();
   if(sess){goHome()}
   else{showScreen('s-login')}
 }
