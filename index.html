@@ -779,7 +779,7 @@ function loadUsers(){
 }
 function saveUsers(){localStorage.setItem('cc2_users',JSON.stringify(users))}
 function getSession(){try{return JSON.parse(localStorage.getItem('cc2_sess'))}catch(e){return null}}
-function setSession(u){localStorage.setItem('cc2_sess',JSON.stringify({id:u.id,name:u.name,stores:u.stores||[],role:u.role}))}
+function setSession(u){localStorage.setItem('cc2_sess',JSON.stringify({id:u.id,name:u.name,stores:u.stores||[],role:u.role,checklists:u.checklists||[]}))}
 function isMaster(){const s=getSession();return s&&s.role==='master'}
 
 /* ─── AUTH ─── */
