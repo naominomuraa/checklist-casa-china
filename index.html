@@ -856,12 +856,17 @@ function renderHome(){
   const recent=evs.sort((a,b)=>b.id-a.id).slice(0,5);
   const rl=document.getElementById('recent-list');
   if(!recent.length){rl.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:16px">Nenhuma avaliação ainda</div>';return}
-  rl.innerHTML=recent.map(ev=>{const cl=checklists.find(c=>c.id===ev.typeId);const sc=ev.score;
-    const _s2=getSession();let _who='';if(_s2&&_s2.role==='master'){const _u=users.find(x=>x.id===ev.userId);if(_u)_who='<div class="ev-user-tag">'+esc(_u.name)+'</div>';}
-    return'<div class="recent-item" onclick="viewEval('"+ev.id+",'\"+'s-home\'\")'>'
+  rl.innerHTML=recent.map(ev=>{
+    const cl=checklists.find(c=>c.id===ev.typeId);const sc=ev.score;
+    const _s2=getSession();let _who='';
+    if(_s2&&_s2.role==='master'){const _u=users.find(x=>x.id===ev.userId);if(_u)_who='<div class="ev-user-tag">'+esc(_u.name)+'</div>';}
+    const _oc='viewEval('+ev.id+",'s-home'"+')';
+    return'<div class="recent-item" onclick="'+_oc+'">'  
     +'<div class="recent-icon">'+(cl?cl.icon:'📋')+'</div>'
-    +'<div class="recent-info"><div class="recent-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+
-    '</div><div class="recent-meta">'+(cl?esc(cl.name):'?')+'<span class="ev-month-tag">· '+fmtMonth(ev.date)+'</span></div>'+_who+'</div>'
+    +'<div class="recent-info">'
+    +'<div class="recent-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+' </div>'
+    +'<div class="recent-meta">'+(cl?esc(cl.name):'?')+'<span class="ev-month-tag"> · '+fmtMonth(ev.date)+'</span></div>'
+    +_who+'</div>'
     +'<div class="recent-score '+scColor(sc)+'">'+sc.toFixed(0)+'%</div></div>';
   }).join('')
 }
