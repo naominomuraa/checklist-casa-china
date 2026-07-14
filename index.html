@@ -829,7 +829,7 @@ function renderHome(){
   document.getElementById('nav-admin').style.display=isMaster()?'flex':'none';
   const grid=document.getElementById('cl-grid');
   const allowedCLs=(sess&&sess.role!=='master'&&sess.checklists&&sess.checklists.length)?checklists.filter(cl=>sess.checklists.includes(cl.id)):checklists;
-  grid.innerHTML=allowedCLs.map(cl=>{const tot=cl.areas.reduce((s,a)=>s+a.questions.length,0);return'<div class="cl-card" onclick="goCLDashboard(\''+cl.id+'\')">'<div class="cl-icon">'+cl.icon+'</div><div class="cl-name">'+esc(cl.name)+'</div><div class="cl-count">'+tot+' perguntas · '+cl.areas.length+' área(s)</div></div>'}).join('');
+  grid.innerHTML=allowedCLs.map(cl=>{const tot=cl.areas.reduce((s,a)=>s+a.questions.length,0);return'<div class="cl-card" onclick="goCLDashboard(\''+cl.id+'\')"><div class="cl-icon">'+cl.icon+'</div><div class="cl-name">'+esc(cl.name)+'</div><div class="cl-count">'+tot+' perguntas · '+cl.areas.length+' área(s)</div></div>'}).join('');
   const sess2=getSession();
   let evs=[...evaluations];
   if(sess2&&sess2.role!=='master')evs=evs.filter(e=>e.userId===sess2.id);
