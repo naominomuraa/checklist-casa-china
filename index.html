@@ -205,6 +205,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .eu-subtitle{font-size:12px;color:var(--muted);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
 .user-card-edit{cursor:pointer;transition:background .15s}
 .user-card-edit:active{background:#f0f0f0}
+
+.month-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:4px}
+.month-table th{background:rgba(0,0,0,.04);font-weight:700;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.4px;padding:6px 8px;border:1px solid var(--border);text-align:center;white-space:nowrap}
+.month-table td{padding:6px 8px;border:1px solid var(--border);text-align:center;font-size:12px}
+.mt-store{text-align:left!important;font-weight:600;color:var(--text);white-space:nowrap;max-width:90px;overflow:hidden;text-overflow:ellipsis}
+.mt-cell{cursor:pointer}
+.mt-good{background:#d1f5d3;color:#1a6b24;font-weight:700}
+.mt-ok{background:#fff3cd;color:#856404;font-weight:700}
+.mt-bad{background:#ffd9d9;color:#9b1c1c;font-weight:700}
+.mt-empty{color:var(--muted);font-size:11px}
+.ev-user-tag{font-size:11px;color:var(--primary);font-weight:600;margin-top:1px}
+.ev-month-tag{font-size:10px;color:var(--muted);margin-left:4px}
 /* Photos */
 .q-photos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .q-photo-thumb{width:64px;height:64px;object-fit:cover;border-radius:8px;border:2px solid var(--border);cursor:pointer}
@@ -284,6 +296,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
   <div class="dash-body">
     <button class="btn-new-eval" onclick="startSetup(currentDashTypeId)">＋ Nova Avaliação</button>
+    <div class="dash-card">
+      <div class="dash-card-title">Comparação por Loja e Mês</div>
+      <div style="overflow-x:auto"><div id="dash-month-table"></div></div>
+    </div>
     <div class="dash-card">
       <div class="dash-card-title">Média por Área</div>
       <div id="dash-areas"><div style="color:var(--muted);font-size:13px">Sem avaliações ainda</div></div>
@@ -817,6 +833,8 @@ function goBack(){
 
 /* ─── UTILS ─── */
 function fmtDate(d){if(!d)return'';const[y,m,day]=d.split('-');return day+'/'+m+'/'+y}
+function fmtMonth(d){if(!d)return'';const dt=new Date(d+'T12:00:00');return dt.toLocaleString('pt-BR',{month:'short',year:'2-digit'}).replace('. de ','/')}
+function monthKey(d){if(!d)return'';const[y,m]=d.split('-');return y+'-'+m}
 function esc(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
 function scColor(v){return v>=80?'score-green':v>=60?'score-yellow':'score-red'}
@@ -838,7 +856,14 @@ function renderHome(){
   const recent=evs.sort((a,b)=>b.id-a.id).slice(0,5);
   const rl=document.getElementById('recent-list');
   if(!recent.length){rl.innerHTML='<div style="color:var(--muted);font-size:13px;text-align:center;padding:16px">Nenhuma avaliação ainda</div>';return}
-  rl.innerHTML=recent.map(ev=>{const cl=checklists.find(c=>c.id===ev.typeId);const sc=ev.score;return'<div class="recent-item" onclick="viewEval('+ev.id+',\'s-home\')">'+'<div class="recent-icon">'+(cl?cl.icon:'📋')+'</div><div class="recent-info"><div class="recent-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+'</div><div class="recent-meta">'+(cl?esc(cl.name):'?')+' · '+fmtDate(ev.date)+'</div></div><div class="recent-score '+scColor(sc)+'">'+sc.toFixed(0)+'%</div></div>'}).join('')
+  rl.innerHTML=recent.map(ev=>{const cl=checklists.find(c=>c.id===ev.typeId);const sc=ev.score;
+    const _s2=getSession();let _who='';if(_s2&&_s2.role==='master'){const _u=users.find(x=>x.id===ev.userId);if(_u)_who='<div class="ev-user-tag">'+esc(_u.name)+'</div>';}
+    return'<div class="recent-item" onclick="viewEval('"+ev.id+",'\"+'s-home\'\")'>'
+    +'<div class="recent-icon">'+(cl?cl.icon:'📋')+'</div>'
+    +'<div class="recent-info"><div class="recent-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+
+    '</div><div class="recent-meta">'+(cl?esc(cl.name):'?')+'<span class="ev-month-tag">· '+fmtMonth(ev.date)+'</span></div>'+_who+'</div>'
+    +'<div class="recent-score '+scColor(sc)+'">'+sc.toFixed(0)+'%</div></div>';
+  }).join('')
 }
 
 /* ─── DASHBOARD ─── */
@@ -901,6 +926,29 @@ function renderCLDashboard(typeId){
   document.getElementById('dash-recent').innerHTML=recentEvs.length?recentEvs.map(ev=>{
     return'<div class="recent-item" onclick="viewEval('+ev.id+',\'s-cl-dashboard\')">'+'<div class="recent-icon">'+cl.icon+'</div><div class="recent-info"><div class="recent-name">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+'</div><div class="recent-meta">'+fmtDate(ev.date)+'</div></div><div class="recent-score '+scColor(ev.score)+'">'+ev.score.toFixed(0)+'%</div></div>'
   }).join(''):'<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">Nenhuma avaliação ainda</div>'
+  const _mt=document.getElementById('dash-month-table');
+  if(_mt){
+    if(!evs.length){_mt.innerHTML='<div style="color:var(--muted);font-size:13px">Sem avaliações ainda</div>';}
+    else{
+      const _mm={};evs.forEach(function(ev){const mk=monthKey(ev.date);if(!_mm[mk])_mm[mk]={label:fmtMonth(ev.date),stores:{}};const st=ev.store||'Sem loja';if(!_mm[mk].stores[st])_mm[mk].stores[st]=[];_mm[mk].stores[st].push(ev);});
+      const _smk=Object.keys(_mm).sort();
+      const _ast=[...new Set(evs.map(function(e){return e.store||'Sem loja'}))].sort();
+      const _sm=getSession();
+      const _th='<th>Loja</th>'+_smk.map(function(mk){return'<th>'+_mm[mk].label+'</th>';}).join('');
+      const _rows=_ast.map(function(st){
+        const cells=_smk.map(function(mk){
+          const sevs=(_mm[mk].stores[st]||[]).slice().sort(function(a,b){return b.id-a.id;});
+          if(!sevs.length)return'<td class="mt-empty">—</td>';
+          const ev=sevs[0];const sc=ev.score;
+          const cls=sc>=80?'mt-good':sc>=60?'mt-ok':'mt-bad';
+          let who='';if(_sm&&_sm.role==='master'){const _u=users.find(function(x){return x.id===ev.userId;});if(_u)who='<br><span style="font-size:9px;opacity:.65">'+esc(_u.name)+'</span>';}
+          return'<td class="mt-cell '+cls+'" onclick="viewEval('+ev.id+',\'s-cl-dashboard\')" title="'+esc(st)+' · '+fmtDate(ev.date)+'">'+sc.toFixed(0)+'%'+who+'</td>';
+        }).join('');
+        return'<tr><td class="mt-store" title="'+esc(st)+'">'+esc(st)+'</td>'+cells+'</tr>';
+      }).join('');
+      _mt.innerHTML='<table class="month-table"><thead><tr>'+_th+'</tr></thead><tbody>'+_rows+'</tbody></table>';
+    }
+  }
 }
 
 /* ─── SETUP ─── */
