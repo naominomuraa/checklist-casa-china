@@ -803,7 +803,8 @@ document.getElementById('li-user').addEventListener('keydown',e=>{if(e.key==='En
 /* ─── NAV ─── */
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
 function setNav(id){document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));const el=document.getElementById(id);if(el)el.classList.add('active')}
-function goHome(){renderHome();showScreen('s-home');setNav('nav-home')}
+function goHome(){
+  const _rs=getSession();if(_rs){const _rl=users.find(u=>u.id===_rs.id);if(_rl)setSession(_rl);}renderHome();showScreen('s-home');setNav('nav-home')}
 function goHistory(){renderHistory();showScreen('s-history');setNav('nav-hist')}
 function goAdmin(){if(!isMaster()){showToast('Acesso restrito a administradores.');return}renderAdmin();showScreen('s-admin');setNav('nav-admin')}
 function goAdminUsers(){renderAdminUsers();showScreen('s-admin-users')}
@@ -1088,7 +1089,9 @@ function saveEditUser(){
   u.checklists=[...document.querySelectorAll('#eu-cl-grid .nu-store-btn.on')].map(b=>b.dataset.clid);
   const np=document.getElementById('eu-pass').value;
   if(np&&np.length>=4)u.pass=np;
-  saveUsers();closeEditUser();renderAdminUsers();
+  saveUsers();
+  const _cs=getSession();if(_cs&&_cs.id===id)setSession(u);
+  closeEditUser();renderAdminUsers();
   showToast('✅ Usuário atualizado!');
 }
 function renderAdmin(){
