@@ -1133,11 +1133,9 @@ function renderAdminUsers(){
   document.getElementById('users-list').innerHTML=users.map(u=>{
     const sl=u.stores&&u.stores.length?u.stores.join(', '):'Todas as lojas';
     const clNames=(u.checklists&&u.checklists.length)?u.checklists.map(id=>{const c=checklists.find(x=>x.id===id);return c?c.name:id}).join(', '):'Todos os tipos';
-    return'<div class="user-card'+(u.id!=='u0'?' user-card-edit':'')+'"+(u.id!=='u0'?' onclick="openEditUser(\''+u.id+'\')"':'')+'>'+
-    '<div class="user-card-icon">'+(u.role==='master'?'👑':'👤')+
-    '</div><div class="user-card-info"><div class="user-card-name">'+esc(u.name)+'</div>'
-    +'<div class="user-card-meta">@'+esc(u.username)+' · '+esc(sl)+(u.role==='master'?' · Master':' · '+esc(clNames))+'</div></div>'
-    +(u.id!=='u0'?'<button class="user-card-del" onclick="event.stopPropagation();deleteUser(\''+u.id+'\')" title="Excluir">✕</button>':'')+'</div>';
+    const cls='user-card'+(u.id!=='u0'?' user-card-edit':'');
+    const clickAttr=u.id!=='u0'?' onclick="openEditUser(\''+u.id+'\')"':'';
+    return'<div class="'+cls+'"'+clickAttr+'><div class="user-card-icon">'+(u.role==='master'?'👑':'👤')+'</div><div class="user-card-info"><div class="user-card-name">'+esc(u.name)+'</div><div class="user-card-meta">@'+esc(u.username)+' · '+esc(sl)+(u.role==='master'?' · Master':' · '+esc(clNames))+'</div></div>'+(u.id!=='u0'?'<button class="user-card-del" onclick="event.stopPropagation();deleteUser(\''+u.id+'\')" title="Excluir">✕</button>':'')+'</div>';
   }).join('')
 }
 function saveNewUser(){
