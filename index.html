@@ -823,10 +823,21 @@ async function loadData(){
     if(clDoc.exists&&clDoc.data().data){checklists=clDoc.data().data}
     else{checklists=JSON.parse(JSON.stringify(DEFAULT_CL));db.collection('appdata').doc('checklists').set({data:checklists})}
     const evSnap=await db.collection('evaluations').get();
-    if(!evSnap.empty){evaluations=evSnap.docs.map(d=>d.data())}
-    else{
-      try{const localEv=localStorage.getItem('cc2_ev');if(localEv){evaluations=JSON.parse(localEv);const batch=db.batch();evaluations.forEach(ev=>batch.set(db.collection('evaluations').doc(String(ev.id)),_stripPhotos(ev)));batch.commit().catch(()=>{})}else{evaluations=[]}}catch(e){evaluations=[]}
-    }
+    const fsEvals=evSnap.docs.map(d=>d.data());
+    const fsIds=new Set(fsEvals.map(e=>String(e.id)));
+    try{
+      const localEv=localStorage.getItem('cc2_ev');
+      if(localEv){
+        const localEvals=JSON.parse(localEv);
+        const newEvals=localEvals.filter(e=>!fsIds.has(String(e.id)));
+        if(newEvals.length>0){
+          const batch=db.batch();
+          newEvals.forEach(ev=>batch.set(db.collection('evaluations').doc(String(ev.id)),_stripPhotos(ev)));
+          await batch.commit().catch(()=>{});
+          evaluations=[...fsEvals,...newEvals];
+        }else{evaluations=fsEvals;}
+      }else{evaluations=fsEvals;}
+    }catch(e){evaluations=fsEvals;}
     db.collection('evaluations').onSnapshot(snap=>{
       const active=document.querySelector('.screen.active');
       if(active&&active.id!=='s-checklist'){
