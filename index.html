@@ -880,8 +880,8 @@ async function loadUsers(){
   }
 }
 function saveUsers(){db.collection('appdata').doc('users').set({data:users}).catch(()=>localStorage.setItem('cc2_users',JSON.stringify(users)))}
-function getSession(){try{return JSON.parse(localStorage.getItem('cc2_sess'))}catch(e){return null}}
-function setSession(u){localStorage.setItem('cc2_sess',JSON.stringify({id:u.id,name:u.name,stores:u.stores||[],role:u.role,checklists:u.checklists||[]}))}
+function getSession(){try{return JSON.parse(sessionStorage.getItem('cc2_sess'))}catch(e){return null}}
+function setSession(u){sessionStorage.setItem('cc2_sess',JSON.stringify({id:u.id,name:u.name,stores:u.stores||[],role:u.role,checklists:u.checklists||[]}))}
 function isMaster(){const s=getSession();return s&&s.role==='master'}
 
 /* ─── AUTH ─── */
@@ -893,7 +893,7 @@ function doLogin(){
   else{document.getElementById('li-err').textContent='Usuário ou senha incorretos.'}
 }
 function doLogout(){
-  localStorage.removeItem('cc2_sess');
+  sessionStorage.removeItem('cc2_sess');
   document.getElementById('li-user').value='';
   document.getElementById('li-pass').value='';
   document.getElementById('li-err').textContent='';
