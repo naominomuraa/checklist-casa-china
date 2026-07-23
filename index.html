@@ -412,9 +412,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <!-- HISTÓRICO -->
 <div class="screen" id="s-history">
-  <div class="header"><button class="header-back" onclick="goHome()">←</button><h1>Histórico</h1></div>
+  <div class="header"><button class="header-back" onclick="goHome()">←</button><h1>Histórico</h1><button class="header-back" style="margin-left:auto;font-size:16px" onclick="goReport()" title="Emitir relatório">📊</button></div>
   <div class="hist-filters" id="hist-filters"></div>
   <div class="hist-body" id="hist-body"></div>
+</div>
+
+<!-- REPORT -->
+<div class="screen" id="s-report">
+  <div class="header"><button class="header-back" onclick="goHistory()">←</button><h1>Emitir Relatório</h1></div>
+  <div style="padding:16px">
+    <div class="setup-card" style="background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:12px">
+      <div class="eu-subtitle" style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Período <small style="font-weight:400;text-transform:none">(vazio = tudo)</small></div>
+      <div style="display:flex;gap:10px">
+        <div style="flex:1"><label style="font-size:11px;color:var(--muted)">De</label><input class="nu-input" type="date" id="rep-date-from" style="width:100%"></div>
+        <div style="flex:1"><label style="font-size:11px;color:var(--muted)">Até</label><input class="nu-input" type="date" id="rep-date-to" style="width:100%"></div>
+      </div>
+    </div>
+    <div style="background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:12px">
+      <div class="eu-subtitle" style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Checklists <small style="font-weight:400;text-transform:none">(nenhum = todos)</small></div>
+      <div class="nu-stores-grid" id="rep-cl-grid"></div>
+    </div>
+    <div style="background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:16px">
+      <div class="eu-subtitle" style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px">Lojas <small style="font-weight:400;text-transform:none">(nenhuma = todas)</small></div>
+      <div class="nu-stores-grid" id="rep-store-grid"></div>
+    </div>
+    <div class="export-btns">
+      <button class="btn-export" onclick="generateReport('pdf')">📄 Relatório PDF</button>
+      <button class="btn-export" onclick="generateReport('xlsx')">📊 Relatório Excel</button>
+    </div>
+    <div id="rep-count" style="text-align:center;font-size:12px;color:var(--muted);margin-top:10px"></div>
+  </div>
 </div>
 
 <!-- EDIT USER MODAL -->
@@ -1316,6 +1343,106 @@ function shareResult(){
   const text='Checklist Casa China\n'+(cl?cl.name:'')+'\nLoja: '+ev.store+(ev.person?' | '+ev.person:'')+'\nData: '+fmtDate(ev.date)+'\nNota: '+ev.score.toFixed(1)+'%';
   if(navigator.share){navigator.share({title:'Checklist Casa China',text})}
   else{navigator.clipboard&&navigator.clipboard.writeText(text).then(()=>showToast('\u{1f4cb} Copiado!'))}
+}
+function goReport(){
+  const sess=getSession();
+  let allowedCLs=checklists;
+  if(sess&&sess.role!=='master'&&sess.checklists&&sess.checklists.length)allowedCLs=checklists.filter(c=>sess.checklists.includes(c.id));
+  let stores=STORES;
+  if(sess&&sess.role!=='master'&&sess.stores&&sess.stores.length)stores=sess.stores;
+  document.getElementById('rep-cl-grid').innerHTML=allowedCLs.map(cl=>'<button type="button" class="nu-store-btn" data-clid="'+cl.id+'" onclick="this.classList.toggle(\'on\')">'+esc(cl.name)+'</button>').join('');
+  document.getElementById('rep-store-grid').innerHTML=stores.map(st=>'<button type="button" class="nu-store-btn" onclick="this.classList.toggle(\'on\')">'+esc(st)+'</button>').join('');
+  document.getElementById('rep-count').textContent='';
+  showScreen('s-report');
+}
+function _repFilter(){
+  const sess=getSession();
+  let evs=evaluations.slice();
+  if(sess&&sess.role!=='master')evs=evs.filter(e=>e.userId===sess.id);
+  const d1=document.getElementById('rep-date-from').value;
+  const d2=document.getElementById('rep-date-to').value;
+  const cls=[...document.querySelectorAll('#rep-cl-grid .nu-store-btn.on')].map(b=>b.dataset.clid);
+  const sts=[...document.querySelectorAll('#rep-store-grid .nu-store-btn.on')].map(b=>b.textContent);
+  if(d1)evs=evs.filter(e=>e.date>=d1);
+  if(d2)evs=evs.filter(e=>e.date<=d2);
+  if(cls.length)evs=evs.filter(e=>cls.includes(e.typeId));
+  if(sts.length)evs=evs.filter(e=>sts.includes(e.store));
+  evs.sort((a,b)=>a.date<b.date?-1:a.date>b.date?1:0);
+  return{evs,d1,d2,cls,sts};
+}
+function _repLabel(d1,d2,cls,sts){
+  const per=d1&&d2?fmtDate(d1)+' a '+fmtDate(d2):d1?'a partir de '+fmtDate(d1):d2?'até '+fmtDate(d2):'todo o período';
+  const cln=cls.length?cls.map(id=>{const c=checklists.find(x=>x.id===id);return c?c.name:id}).join(', '):'todos os checklists';
+  const stn=sts.length?sts.join(', '):'todas as lojas';
+  return{per,cln,stn};
+}
+function generateReport(fmt){
+  const{evs,d1,d2,cls,sts}=_repFilter();
+  document.getElementById('rep-count').textContent=evs.length+' avaliação(ões) encontrada(s)';
+  if(!evs.length){showToast('Nenhuma avaliação encontrada com esses filtros.');return}
+  const sess=getSession();
+  const isMaster=!sess||sess.role==='master';
+  const{per,cln,stn}=_repLabel(d1,d2,cls,sts);
+  const avg=evs.reduce((a,e)=>a+e.score,0)/evs.length;
+  const byStore={};
+  evs.forEach(e=>{if(!byStore[e.store])byStore[e.store]={n:0,sum:0};byStore[e.store].n++;byStore[e.store].sum+=e.score});
+  if(fmt==='xlsx'){
+    if(typeof XLSX==='undefined'){showToast('Biblioteca Excel não carregada.');return}
+    const head=['Data','Checklist','Loja','Colaborador'];
+    if(isMaster)head.push('Feito por');
+    head.push('Nota (%)');
+    const rows=[['Checklist Casa China — Relatório Consolidado'],['Período:',per],['Checklists:',cln],['Lojas:',stn],['Total de avaliações:',evs.length],['Média geral:',avg.toFixed(1)+'%'],[],head,
+      ...evs.map(e=>{const c=checklists.find(x=>x.id===e.typeId);const r=[fmtDate(e.date),c?c.name:'?',e.store,e.person||''];if(isMaster){const u=users.find(x=>x.id===e.userId);r.push(u?u.name:'')}r.push(e.score.toFixed(1));return r}),
+      [],['Resumo por Loja'],['Loja','Avaliações','Média (%)'],
+      ...Object.keys(byStore).sort().map(st=>[st,byStore[st].n,(byStore[st].sum/byStore[st].n).toFixed(1)])];
+    const ws=XLSX.utils.aoa_to_sheet(rows);
+    ws['!cols']=[{wch:12},{wch:26},{wch:20},{wch:20},{wch:18},{wch:10}];
+    const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Relatório');
+    XLSX.writeFile(wb,'relatorio_casa_china.xlsx');showToast('\u{1f4ca} Excel gerado!');
+    return;
+  }
+  const rowsHTML=evs.map(e=>{
+    const c=checklists.find(x=>x.id===e.typeId);
+    const col=e.score>=80?'#27ae60':e.score>=60?'#f39c12':'#e74c3c';
+    let who='';
+    if(isMaster){const u=users.find(x=>x.id===e.userId);who='<td>'+(u?esc(u.name):'')+'</td>'}
+    return'<tr><td>'+fmtDate(e.date)+'</td><td>'+(c?esc(c.name):'?')+'</td><td>'+esc(e.store)+'</td><td>'+esc(e.person||'')+'</td>'+who+'<td style="text-align:center;font-weight:700;color:'+col+'">'+e.score.toFixed(1)+'%</td></tr>';
+  }).join('');
+  const storeHTML=Object.keys(byStore).sort().map(st=>{
+    const m=byStore[st].sum/byStore[st].n;
+    const col=m>=80?'#27ae60':m>=60?'#f39c12':'#e74c3c';
+    return'<tr><td>'+esc(st)+'</td><td style="text-align:center">'+byStore[st].n+'</td><td style="text-align:center;font-weight:700;color:'+col+'">'+m.toFixed(1)+'%</td></tr>';
+  }).join('');
+  const avgCol=avg>=80?'#27ae60':avg>=60?'#f39c12':'#e74c3c';
+  const html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Relatório Casa China</title><style>'
+    +'body{font-family:Arial,sans-serif;margin:0;padding:20px;font-size:11px;color:#222}'
+    +'.header{background:#c0392b;color:#fff;padding:16px 20px;border-radius:8px;margin-bottom:16px}'
+    +'.header h1{margin:0;font-size:18px}.header p{margin:4px 0 0;opacity:.85;font-size:12px}'
+    +'.score-box{background:#f5f5f5;border-radius:8px;padding:12px 20px;display:flex;align-items:center;gap:20px;margin-bottom:16px}'
+    +'.score-num{font-size:36px;font-weight:900;color:'+avgCol+'}'
+    +'table{width:100%;border-collapse:collapse;margin-bottom:16px}'
+    +'th{background:#c0392b;color:#fff;padding:6px 8px;text-align:left;font-size:10px}'
+    +'td{padding:5px 8px;border-bottom:1px solid #eee;vertical-align:top}'
+    +'tr:nth-child(even) td{background:#fafafa}'
+    +'h2{font-size:14px;margin:16px 0 8px}'
+    +'.footer{font-size:10px;color:#888;margin-top:20px;border-top:1px solid #eee;padding-top:8px}'
+    +'@media print{body{padding:0}}'
+    +'</style></head><body>'
+    +'<div class="header"><h1><img src="'+LOGO_B64+'" alt="Casa China" style="height:34px;vertical-align:middle"></h1>'
+    +'<p>Relatório Consolidado &nbsp;|&nbsp; '+esc(per)+'</p>'
+    +'<p>'+esc(cln)+' &nbsp;|&nbsp; '+esc(stn)+'</p></div>'
+    +'<div class="score-box"><div class="score-num">'+avg.toFixed(1)+'%</div><div><strong>Média geral</strong><br>'+evs.length+' avaliação(ões)</div></div>'
+    +'<h2>Avaliações</h2>'
+    +'<table><thead><tr><th>Data</th><th>Checklist</th><th>Loja</th><th>Colaborador</th>'+(isMaster?'<th>Feito por</th>':'')+'<th>Nota</th></tr></thead><tbody>'+rowsHTML+'</tbody></table>'
+    +'<h2>Resumo por Loja</h2>'
+    +'<table><thead><tr><th>Loja</th><th>Avaliações</th><th>Média</th></tr></thead><tbody>'+storeHTML+'</tbody></table>'
+    +'<div class="footer">Gerado em '+new Date().toLocaleString('pt-BR')+' — Checklist Casa China</div>'
+    +'<script>window.onload=function(){window.print()}<\/script>'
+    +'</body></html>';
+  const w=window.open('','_blank','width=800,height=600');
+  if(!w){showToast('⚠️ Permita pop-ups para gerar o PDF.');return}
+  w.document.write(html);w.document.close();
+  showToast('📄 Abrindo para imprimir / salvar como PDF...');
 }
 function exportPDF(){
   const ev=viewingEval;if(!ev)return;

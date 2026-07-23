@@ -1,4 +1,4 @@
-const CACHE='cc2-v7';
+const CACHE='cc2-v8';
 const ASSETS=[
   '/checklist-casa-china/',
   '/checklist-casa-china/index.html',
