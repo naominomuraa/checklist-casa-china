@@ -1,4 +1,4 @@
-const CACHE='cc2-v8';
+const CACHE='cc2-v9';
 const ASSETS=[
   '/checklist-casa-china/',
   '/checklist-casa-china/index.html',
@@ -15,5 +15,17 @@ self.addEventListener('activate',e=>{
   self.clients.claim();
 });
 self.addEventListener('fetch',e=>{
-  e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request).catch(()=>caches.match('/checklist-casa-china/'))));
+  const url=new URL(e.request.url);
+  const isHTML=e.request.mode==='navigate'||url.pathname==='/checklist-casa-china/'||url.pathname.endsWith('/index.html');
+  if(isHTML){
+    e.respondWith(
+      fetch(e.request).then(r=>{
+        const cp=r.clone();
+        caches.open(CACHE).then(c=>c.put(e.request,cp));
+        return r;
+      }).catch(()=>caches.match(e.request).then(m=>m||caches.match('/checklist-casa-china/')))
+    );
+  }else{
+    e.respondWith(caches.match(e.request).then(cached=>cached||fetch(e.request).catch(()=>caches.match('/checklist-casa-china/'))));
+  }
 });
