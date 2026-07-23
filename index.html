@@ -1056,10 +1056,9 @@ function startSetup(typeId){
   const sess=getSession();
   const userStores=(sess&&sess.stores)||[];
   const sg=document.getElementById('setup-store-grid');
-  sg.innerHTML=STORES.map(s=>{
-    const locked=userStores.length>0&&!userStores.includes(s);
+  sg.innerHTML=STORES.filter(s=>userStores.length===0||userStores.includes(s)).map(s=>{
     const pre=userStores.length===1&&s===userStores[0];
-    return'<button class="store-btn'+(pre?' selected':'')+'" onclick="selectStore(\''+s.replace(/'/g,"\\'")+'\',this)"'+(locked?' disabled':'')+'>'+esc(s)+'</button>'
+    return'<button class="store-btn'+(pre?' selected':'')+'" onclick="selectStore(\''+s.replace(/'/g,"\\'")+'\',this)">'+esc(s)+'</button>'
   }).join('');
   if(userStores.length===1){setupStore=userStores[0];currentEval.store=userStores[0]}
   document.getElementById('setup-person-sec').style.display=cl.hasPerson?'block':'none';
