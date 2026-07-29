@@ -569,6 +569,47 @@ const STORES=['Lapa','Londrina','Maringá','Paranaguá','Rui Barbosa','Água Ver
 const DEFAULT_USERS=[{id:'u0',name:'Master',username:'master',pass:'master123',stores:[],role:'master'}];
 
 const DEFAULT_CL=[
+{id:'visita',name:'Visita Loja',icon:'🏪',v:2,hasStore:true,hasPerson:false,areas:[
+  {id:'a1',name:'Loja Geral',questions:[
+    {id:'q1',text:'A frente da loja está limpa?',weight:1},
+    {id:'q2',text:'A vitrine está no padrão?',weight:1},
+    {id:'q3',text:'A frente de caixa está limpa e com acessórios?',weight:1},
+    {id:'q4',text:'O atendimento da frente de caixa está no padrão? (A Casa China agradece pela compra?)',weight:1},
+    {id:'q5',text:'O abastecimento das ilhas na entrada está no padrão?',weight:1},
+    {id:'q6',text:'A loja está limpa?',weight:1},
+    {id:'q7',text:'As pontas de gôndola estão no padrão?',weight:1},
+    {id:'q8',text:'Os sanitários dos clientes estão limpos?',weight:1},
+    {id:'q9',text:'O cartazeamento da loja está no padrão?',weight:1},
+    {id:'q10',text:'As mercadorias estão precificadas no padrão?',weight:2},
+    {id:'q11',text:'O layout está no padrão?',weight:1},
+    {id:'q12',text:'Os produtos expostos em ilhas e pontas estão abastecidos no layout no corredor e cartazeados?',weight:1},
+    {id:'q13',text:'O atendimento ao cliente está no padrão?',weight:1},
+    {id:'q14',text:'A loja está fazendo reunião de piso?',weight:1},
+    {id:'q15',text:'A loja está fazendo reunião de supervisores e apresentou a ata assinada?',weight:1},
+    {id:'q16',text:'Os sanitários e vestiários dos colaboradores estão limpos?',weight:1},
+    {id:'q17',text:'A loja está controlando as datas de validade e PEPS?',weight:1},
+    {id:'q18',text:'O depósito está organizado e limpo?',weight:2},
+    {id:'q19',text:'As quebras estão sendo lançadas no sistema?',weight:1},
+    {id:'q20',text:'Os produtos da curva A estão abastecidos?',weight:1},
+    {id:'q21',text:'Os produtos de encarte estão expostos e cartazeados?',weight:2},
+    {id:'q22',text:'A sala de reunião está limpa e organizada?',weight:1},
+    {id:'q23',text:'Os produtos furtáveis se encontram confinados com chave e fechados?',weight:1},
+    {id:'q24',text:'No depósito, as mercadorias estão organizadas e separadas por fornecedor?',weight:1},
+    {id:'q25',text:'A sala do cofre está limpa e organizada?',weight:1},
+    {id:'q26',text:'O CPD está limpo e organizado?',weight:1},
+    {id:'q27',text:'A casa de máquinas está limpa e organizada?',weight:1},
+    {id:'q28',text:'Os colaboradores novos tiveram os treinamentos de integração, atendimento e técnico de sua função?',weight:1},
+    {id:'q29',text:'As pontas de gôndolas estão ambientadas?',weight:1},
+    {id:'q30',text:'O gerente fez reunião mensal com as operadoras de caixa, com foco em melhorar o ambiente de trabalho e ouvir as reclamações dos clientes, e apresentou a ata assinada?',weight:1},
+    {id:'q31',text:'O gerente fez reunião mensal com os repositores, com foco em melhorar o ambiente de trabalho e ouvir as reclamações dos clientes, e apresentou a ata assinada?',weight:1},
+    {id:'q32',text:'O fiscal de loja está no posto na entrada da loja, atento?',weight:1},
+    {id:'q33',text:'Os fiscais de loja estão circulando na loja atentos e sem conversas paralelas com colaboradores?',weight:1},
+    {id:'q34',text:'O gerente fez reunião com supervisores de caixa perguntando como eles se sentem na empresa e o que os clientes reclamam da loja?',weight:1},
+    {id:'q35',text:'O gerente fez reunião com o time de apoio: fiscal de loja, auxiliar de serviços gerais, estoquistas, auxiliar administrativo e outros?',weight:1},
+    {id:'q36',text:'A sala do gerente está limpa e organizada?',weight:1},
+    {id:'q37',text:'A sala do administrativo, encarregado e supervisores está limpa e organizada?',weight:1}
+  ]}
+]},
 {id:'vm',name:'Visual Merchandising',icon:'🏮',hasStore:true,hasPerson:false,areas:[
   {id:'a1',name:'Comunicação Visual',questions:[
     {id:'q1',text:'Os cartazes estão de acordo com o padrão estabelecido pelo Marketing (tamanho, dinâmica e descrição correta)?',weight:1},
@@ -840,47 +881,6 @@ const DEFAULT_CL=[
     {id:'q15',text:'Informado Pinpad Reserva 001?',weight:1},
     {id:'q16',text:'Informado Pinpad Reserva 002?',weight:1}
   ]}
-]},
-{id:'visita',name:'Visita Loja',icon:'🏪',v:2,hasStore:true,hasPerson:false,areas:[
-  {id:'a1',name:'Loja Geral',questions:[
-    {id:'q1',text:'A frente da loja está limpa?',weight:1},
-    {id:'q2',text:'A vitrine está no padrão?',weight:1},
-    {id:'q3',text:'A frente de caixa está limpa e com acessórios?',weight:1},
-    {id:'q4',text:'O atendimento da frente de caixa está no padrão? (A Casa China agradece pela compra?)',weight:1},
-    {id:'q5',text:'O abastecimento das ilhas na entrada está no padrão?',weight:1},
-    {id:'q6',text:'A loja está limpa?',weight:1},
-    {id:'q7',text:'As pontas de gôndola estão no padrão?',weight:1},
-    {id:'q8',text:'Os sanitários dos clientes estão limpos?',weight:1},
-    {id:'q9',text:'O cartazeamento da loja está no padrão?',weight:1},
-    {id:'q10',text:'As mercadorias estão precificadas no padrão?',weight:2},
-    {id:'q11',text:'O layout está no padrão?',weight:1},
-    {id:'q12',text:'Os produtos expostos em ilhas e pontas estão abastecidos no layout no corredor e cartazeados?',weight:1},
-    {id:'q13',text:'O atendimento ao cliente está no padrão?',weight:1},
-    {id:'q14',text:'A loja está fazendo reunião de piso?',weight:1},
-    {id:'q15',text:'A loja está fazendo reunião de supervisores e apresentou a ata assinada?',weight:1},
-    {id:'q16',text:'Os sanitários e vestiários dos colaboradores estão limpos?',weight:1},
-    {id:'q17',text:'A loja está controlando as datas de validade e PEPS?',weight:1},
-    {id:'q18',text:'O depósito está organizado e limpo?',weight:2},
-    {id:'q19',text:'As quebras estão sendo lançadas no sistema?',weight:1},
-    {id:'q20',text:'Os produtos da curva A estão abastecidos?',weight:1},
-    {id:'q21',text:'Os produtos de encarte estão expostos e cartazeados?',weight:2},
-    {id:'q22',text:'A sala de reunião está limpa e organizada?',weight:1},
-    {id:'q23',text:'Os produtos furtáveis se encontram confinados com chave e fechados?',weight:1},
-    {id:'q24',text:'No depósito, as mercadorias estão organizadas e separadas por fornecedor?',weight:1},
-    {id:'q25',text:'A sala do cofre está limpa e organizada?',weight:1},
-    {id:'q26',text:'O CPD está limpo e organizado?',weight:1},
-    {id:'q27',text:'A casa de máquinas está limpa e organizada?',weight:1},
-    {id:'q28',text:'Os colaboradores novos tiveram os treinamentos de integração, atendimento e técnico de sua função?',weight:1},
-    {id:'q29',text:'As pontas de gôndolas estão ambientadas?',weight:1},
-    {id:'q30',text:'O gerente fez reunião mensal com as operadoras de caixa, com foco em melhorar o ambiente de trabalho e ouvir as reclamações dos clientes, e apresentou a ata assinada?',weight:1},
-    {id:'q31',text:'O gerente fez reunião mensal com os repositores, com foco em melhorar o ambiente de trabalho e ouvir as reclamações dos clientes, e apresentou a ata assinada?',weight:1},
-    {id:'q32',text:'O fiscal de loja está no posto na entrada da loja, atento?',weight:1},
-    {id:'q33',text:'Os fiscais de loja estão circulando na loja atentos e sem conversas paralelas com colaboradores?',weight:1},
-    {id:'q34',text:'O gerente fez reunião com supervisores de caixa perguntando como eles se sentem na empresa e o que os clientes reclamam da loja?',weight:1},
-    {id:'q35',text:'O gerente fez reunião com o time de apoio: fiscal de loja, auxiliar de serviços gerais, estoquistas, auxiliar administrativo e outros?',weight:1},
-    {id:'q36',text:'A sala do gerente está limpa e organizada?',weight:1},
-    {id:'q37',text:'A sala do administrativo, encarregado e supervisores está limpa e organizada?',weight:1}
-  ]}
 ]}
 ];
 
@@ -909,6 +909,11 @@ async function loadData(){
         const k=checklists.findIndex(c=>c.id===dc.id);
         if(k>=0&&(checklists[k].v||0)<dc.v){checklists[k]=JSON.parse(JSON.stringify(dc));changed=true}
       });
+      const ord=DEFAULT_CL.map(c=>c.id);
+      const rank=c=>{const k=ord.indexOf(c.id);return k<0?999:k};
+      const before=checklists.map(c=>c.id).join(',');
+      checklists.sort((a,b)=>rank(a)-rank(b));
+      if(checklists.map(c=>c.id).join(',')!==before)changed=true;
       if(changed)db.collection('appdata').doc('checklists').set({data:checklists}).catch(()=>{})
     }
     else{checklists=JSON.parse(JSON.stringify(DEFAULT_CL));db.collection('appdata').doc('checklists').set({data:checklists})}
