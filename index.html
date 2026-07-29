@@ -480,6 +480,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div id="admin-cl-list"></div>
     </div>
     <div class="admin-section">
+      <div class="section-title">Envio de E-mail</div>
+      <div class="pwd-row">
+        <label>Link do robô (Apps Script)</label>
+        <input type="text" id="admin-mail-url" placeholder="Cole aqui o link /exec do Apps Script">
+        <button class="btn-save-pwd" onclick="saveMailUrl()">Salvar link</button>
+        <button class="btn-save-pwd" style="background:#555;margin-top:6px" onclick="testMailUrl()">Enviar e-mail de teste</button>
+      </div>
+    </div>
+    <div class="admin-section">
       <div class="section-title">Minha Senha</div>
       <div class="pwd-row">
         <label>Nova Senha</label>
@@ -982,7 +991,7 @@ function setNav(id){document.querySelectorAll('.nav-btn').forEach(b=>b.classList
 function goHome(){
   const _rs=getSession();if(_rs){const _rl=users.find(u=>u.id===_rs.id);if(_rl)setSession(_rl);}renderHome();showScreen('s-home');setNav('nav-home')}
 function goHistory(){renderHistory();showScreen('s-history');setNav('nav-hist')}
-function goAdmin(){if(!isMaster()){showToast('Acesso restrito a administradores.');return}renderAdmin();showScreen('s-admin');setNav('nav-admin')}
+function goAdmin(){if(!isMaster()){showToast('Acesso restrito a administradores.');return}renderAdmin();const _mu=document.getElementById('admin-mail-url');if(_mu)_mu.value=APP_SETTINGS.mailUrl||'';showScreen('s-admin');setNav('nav-admin')}
 function goAdminUsers(){renderAdminUsers();showScreen('s-admin-users')}
 function backFromAdminType(){editingCl=null;goAdmin()}
 function goBack(){
@@ -1491,7 +1500,48 @@ function generateReport(fmt){
   w.document.write(html);w.document.close();
   showToast('📄 Abrindo para imprimir / salvar como PDF...');
 }
-function emailEval(){
+var APP_SETTINGS={mailUrl:''};
+async function loadSettings(){
+  try{
+    const d=await db.collection('appdata').doc('settings').get();
+    if(d.exists&&d.data())APP_SETTINGS=Object.assign({mailUrl:''},d.data());
+    db.collection('appdata').doc('settings').onSnapshot(sn=>{if(sn.exists&&sn.data())APP_SETTINGS=Object.assign({mailUrl:''},sn.data())});
+  }catch(x){}
+}
+function saveMailUrl(){
+  const el=document.getElementById('admin-mail-url');
+  const u=(el.value||'').trim();
+  if(u&&!/^https:\/\/script\.google\.com\/.+\/exec$/.test(u)){showToast('Link inválido. Ele precisa começar com https://script.google.com e terminar com /exec');return}
+  APP_SETTINGS.mailUrl=u;
+  db.collection('appdata').doc('settings').set(APP_SETTINGS,{merge:true})
+    .then(()=>showToast(u?'✅ Link salvo!':'Link removido.'))
+    .catch(()=>showToast('Erro ao salvar o link.'));
+}
+async function testMailUrl(){
+  const el=document.getElementById('admin-mail-url');
+  const u=(el.value||'').trim()||APP_SETTINGS.mailUrl;
+  if(!u){showToast('Cole o link do robô primeiro.');return}
+  const to=prompt('Enviar e-mail de teste para qual endereço?','');
+  if(!to)return;
+  showToast('Enviando teste...');
+  const r=await sendMailViaScript(u,{to:to.trim(),subject:'Teste — Check List Casa China',text:'Se você recebeu este e-mail, o envio automático está funcionando.'});
+  showToast(r.ok?'✅ Teste enviado! Confira a caixa de entrada.':'❌ Falhou: '+r.error);
+}
+async function sendMailViaScript(url,payload){
+  try{
+    const res=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+    let j=null;
+    try{j=await res.json()}catch(e){}
+    if(j&&j.ok===false)return{ok:false,error:j.error||'erro no robô'};
+    return{ok:true};
+  }catch(err){
+    try{
+      await fetch(url,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+      return{ok:true,blind:true};
+    }catch(e2){return{ok:false,error:'sem conexão com o robô'}}
+  }
+}
+async function emailEval(){
   const ev=viewingEval;if(!ev){showToast('Nenhuma avaliação aberta.');return}
   const cl=checklists.find(c=>c.id===ev.typeId);
   const prev=(ev.emailTo||'');
@@ -1537,6 +1587,33 @@ function emailEval(){
   L.push('Enviado pelo app Check List — Casa China');
   const subject=(cl?cl.name:'Checklist')+' — '+ev.store+' — '+fmtDate(ev.date)+' — '+ev.score.toFixed(1)+'%';
   const body=L.join('\n');
+  if(APP_SETTINGS&&APP_SETTINGS.mailUrl){
+    showToast('✉️ Enviando...');
+    const scCol=ev.score>=80?'#27ae60':ev.score>=60?'#f39c12':'#e74c3c';
+    const areasH=(ev.areaScores||[]).map(a=>{const c=a.pct>=80?'#27ae60':a.pct>=60?'#f39c12':'#e74c3c';return'<tr><td style="padding:4px 8px;border-bottom:1px solid #eee">'+esc(a.areaName)+'</td><td style="padding:4px 8px;border-bottom:1px solid #eee;text-align:right;font-weight:700;color:'+c+'">'+a.pct.toFixed(1)+'%</td></tr>'}).join('');
+    const lowH=low.length?low.map(q=>{const a=ev.answers[q.id];return'<li style="margin-bottom:4px"><strong>['+a.score+'/5]</strong> '+esc(q.text)+(a.comment?'<br><em style="color:#777">'+esc(a.comment)+'</em>':'')+'</li>'}).join(''):'<li style="color:#27ae60">Nenhum ponto de atenção.</li>';
+    const allH=allQ.map(q=>{const a=ev.answers?ev.answers[q.id]:null;const sc=a&&a.score!==null?a.score:null;const c=sc===null?'#999':sc<=1?'#e74c3c':sc<=2?'#f39c12':'#27ae60';return'<tr><td style="padding:4px 8px;border-bottom:1px solid #eee">'+esc(q.areaName)+'</td><td style="padding:4px 8px;border-bottom:1px solid #eee">'+esc(q.text)+(a&&a.comment?'<br><em style="color:#777">'+esc(a.comment)+'</em>':'')+'</td><td style="padding:4px 8px;border-bottom:1px solid #eee;text-align:center;font-weight:700;color:'+c+'">'+(sc===null?'—':sc+'/5')+'</td></tr>'}).join('');
+    const html='<div style="font-family:Arial,sans-serif;color:#222;font-size:13px">'
+      +'<div style="background:#c0392b;color:#fff;padding:14px 18px;border-radius:8px">'
+      +'<div style="font-size:16px;font-weight:700">'+esc(cl?cl.name:'Checklist')+'</div>'
+      +'<div style="opacity:.9;font-size:12px;margin-top:3px">'+esc(ev.store)+(ev.person?' — '+esc(ev.person):'')+' &nbsp;|&nbsp; '+fmtDate(ev.date)+'</div></div>'
+      +'<div style="margin:14px 0;font-size:30px;font-weight:900;color:'+scCol+'">'+ev.score.toFixed(1)+'%</div>'
+      +(_se&&_se.name?'<div style="font-size:12px;color:#666;margin-bottom:12px">Aplicado por '+esc(_se.name)+'</div>':'')
+      +'<h3 style="font-size:14px;margin:16px 0 6px">Resumo por área</h3><table style="width:100%;border-collapse:collapse">'+areasH+'</table>'
+      +'<h3 style="font-size:14px;margin:16px 0 6px">Pontos de atenção ('+low.length+')</h3><ul style="padding-left:18px;margin:0">'+lowH+'</ul>'
+      +(ev.notes?'<h3 style="font-size:14px;margin:16px 0 6px">Observações iniciais</h3><div>'+esc(ev.notes)+'</div>':'')
+      +(ev.conclusion?'<h3 style="font-size:14px;margin:16px 0 6px">Conclusão</h3><div>'+esc(ev.conclusion)+'</div>':'')
+      +'<h3 style="font-size:14px;margin:16px 0 6px">Todas as respostas</h3>'
+      +'<table style="width:100%;border-collapse:collapse"><thead><tr style="background:#c0392b;color:#fff"><th style="padding:5px 8px;text-align:left">Área</th><th style="padding:5px 8px;text-align:left">Pergunta</th><th style="padding:5px 8px">Nota</th></tr></thead><tbody>'+allH+'</tbody></table>'
+      +'<div style="margin-top:18px;font-size:11px;color:#888;border-top:1px solid #eee;padding-top:8px">Enviado automaticamente pelo app Check List — Casa China</div></div>';
+    const r=await sendMailViaScript(APP_SETTINGS.mailUrl,{to:dest,subject:subject,text:body,html:html});
+    if(r.ok){showToast(r.blind?'✉️ Enviado! (confira os enviados)':'✅ E-mail enviado para '+dest)}
+    else{
+      showToast('❌ Falha no envio: '+r.error+'. Abrindo seu app de e-mail...');
+      setTimeout(()=>{window.location.href='mailto:'+encodeURIComponent(dest)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body.length>1500?body.substring(0,1500):body)},1200);
+    }
+    return;
+  }
   const url='mailto:'+encodeURIComponent(dest)+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
   if(url.length>1900){
     const short=L.slice(0,L.indexOf('TODAS AS RESPOSTAS')).join('\n')+'\n\n(Relatório completo em anexo — gere o PDF pelo botão 📄 PDF)\n\n---\nEnviado pelo app Check List — Casa China';
@@ -1678,6 +1755,7 @@ async function init(){
   var _ll=document.getElementById('img-login-logo');if(_ll)_ll.src=LOGO_B64;
   var chin=document.getElementById('img-result-chin');if(chin)chin.src=CHIN_B64;
   await loadUsers();
+  loadSettings();
   await loadData();
   const sess=getSession();
   if(sess){goHome()}
